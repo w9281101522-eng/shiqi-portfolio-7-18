@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>互动式中文个人作品集 Preview</title>
+    <meta name="color-scheme" content="light" />
+    <style>
+      :root {
+        --page-bg: #fafafa;
+        --page-bg-muted: rgb(253, 253, 253);
+        --surface-bg: #ffffff;
+        --surface-bg-muted: rgb(253, 253, 253);
+        --surface-border: #ebebeb;
+        --surface-border-strong: rgb(218, 218, 218);
+        --surface-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04), 0 8px 8px -8px rgba(0, 0, 0, 0.04);
+        --surface-shadow-soft: 0 0 0 1px #ebebeb;
+        --ink: #171717;
+        --muted: #4d4d4d;
+        --subtle: rgb(146, 146, 146);
+        --accent: #0072f5;
+        --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+        --body-size: 16px;
+        --body-line: 24px;
+        --body-weight: 400;
+        --label-size: 12px;
+        --label-line: 20px;
+        --label-track: 0.04em;
+        --title-size: 28px;
+        --title-line: 32px;
+        --title-track: -0.03em;
+        --section-size: 24px;
+        --section-line: 32px;
+        --section-track: -0.02em;
+        --source-size: 13px;
+        --source-line: 22px;
+        --space-1: 8px;
+        --space-2: 12px;
+        --space-3: 16px;
+        --space-4: 24px;
+        --space-5: 32px;
+        --space-6: 40px;
+        --radius-panel: 8px;
+        --radius-card: 8px;
+        --radius-micro: 6px;
+        --radius-pill: 999px;
+        --button-height: 40px;
+        --button-font-size: 12px;
+        --button-weight: 500;
+        --button-radius: 999px;
+        --secondary-button-radius: 999px;
+        --layout-gap: 24px;
+        --page-padding: 24px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        font-weight: var(--body-weight);
+        line-height: var(--body-line);
+        background:
+          radial-gradient(circle at top, color-mix(in srgb, var(--accent) 8%, transparent), transparent 30%),
+          linear-gradient(180deg, var(--page-bg) 0%, var(--page-bg-muted) 100%);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image:
+          linear-gradient(color-mix(in srgb, var(--surface-border) 56%, transparent) 1px, transparent 1px),
+          linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 56%, transparent) 1px, transparent 1px);
+        background-size: 100% calc(48px), calc(48px) 100%;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent 88%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1440px, calc(100vw - (var(--page-padding) * 2)));
+        margin: 0 auto;
+        padding: var(--page-padding) 0 calc(var(--page-padding) * 1.2);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(340px, 0.92fr) minmax(420px, 1fr);
+        gap: var(--layout-gap);
+        align-items: start;
+      }
+
+      .stack {
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      .panel {
+        overflow: hidden;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-panel);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--surface-bg) 88%, white) 0%, var(--surface-bg) 100%);
+        box-shadow: var(--surface-shadow);
+      }
+
+      .panel-inner {
+        padding: var(--space-4);
+      }
+
+      .hero-card {
+        position: relative;
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        left: var(--space-4);
+        right: var(--space-4);
+        top: 0;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #fafafa 0%, #ffffff 33%, #171717 67%, #4d4d4d 100%);
+      }
+
+      .eyebrow {
+        margin-bottom: var(--space-2);
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .site-title,
+      .section-title {
+        margin: 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .site-title {
+        font-size: var(--title-size);
+        line-height: var(--title-line);
+        letter-spacing: var(--title-track);
+      }
+
+      .descriptor {
+        margin: var(--space-2) 0 0;
+        max-width: 42ch;
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .summary {
+        margin: var(--space-3) 0 0;
+        max-width: 56ch;
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin: var(--space-3) 0 0;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: calc(8px * 3);
+        padding: 0 var(--space-2);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-pill);
+        background: var(--surface-bg);
+        color: var(--ink);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .observed-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-top: var(--space-4);
+        padding-top: var(--space-3);
+        border-top: 1px solid var(--surface-border);
+        color: var(--muted);
+        font-size: var(--label-size);
+        overflow-wrap: anywhere;
+      }
+
+      .observed-link::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+
+      .section-title {
+        font-size: var(--section-size);
+        line-height: var(--section-line);
+        letter-spacing: var(--section-track);
+      }
+
+      .section-subtitle {
+        margin: var(--space-2) 0 var(--space-4);
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .palette-grid,
+      .theme-mode-grid,
+      .type-list,
+      .component-card,
+      .prompt-list,
+      .mini-grid,
+      .token-table {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .palette-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .palette-row.neutral-row {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .theme-mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-3);
+      }
+
+      .theme-mode-card {
+        display: grid;
+        gap: var(--space-2);
+        padding: var(--space-3);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-card);
+        background: color-mix(in srgb, var(--surface-bg) 92%, white);
+      }
+
+      .theme-mode-card.is-dark {
+        background: #111111;
+        color: #f4f4f4;
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .theme-mode-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+      }
+
+      .theme-mode-label {
+        color: var(--subtle);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .theme-mode-card.is-dark .theme-mode-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .theme-mode-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: calc(var(--body-size) - 1px);
+        line-height: calc(var(--body-line) - 4px);
+      }
+
+      .theme-mode-card.is-dark .theme-mode-note {
+        color: rgba(255, 255, 255, 0.82);
+      }
+
+      .theme-swatch-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .theme-swatch {
+        display: grid;
+        gap: 6px;
+      }
+
+      .theme-swatch-box {
+        height: 72px;
+        border-radius: calc(var(--radius-card) - 4px);
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 75%, transparent);
+      }
+
+      .theme-mode-card.is-dark .theme-swatch-box {
+        border-color: rgba(255, 255, 255, 0.14);
+      }
+
+      .theme-swatch-name {
+        color: inherit;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+
+      .theme-swatch-value {
+        color: var(--subtle);
+        font-size: 11px;
+        line-height: 1.3;
+      }
+
+      .theme-mode-card.is-dark .theme-swatch-value {
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .swatch {
+        display: grid;
+        gap: var(--space-2);
+      }
+
+      .swatch-box {
+        min-height: calc(8px * 12);
+        border-radius: var(--radius-card);
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 75%, transparent);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 4%, transparent);
+      }
+
+      .swatch-label,
+      .token-heading,
+      .prompt-card strong,
+      .card-preview h4 {
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        font-weight: 600;
+      }
+
+      .swatch-meta,
+      .type-metrics,
+      .mini-label,
+      .copy-state,
+      .file-tab,
+      .ghost-button,
+      .segmented button {
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+      }
+
+      .type-row {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr) auto;
+        gap: var(--space-2);
+        align-items: baseline;
+        padding: var(--space-2) 0;
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .type-row:first-child,
+      .mini-row:first-child,
+      .token-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .type-role {
+        color: var(--muted);
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+        letter-spacing: var(--label-track);
+        text-transform: uppercase;
+      }
+
+      .type-sample {
+        color: var(--ink);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .split-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-4);
+      }
+
+      .token-row,
+      .mini-row {
+        display: grid;
+        gap: var(--space-2);
+        align-items: start;
+        padding-top: var(--space-2);
+        border-top: 1px solid var(--surface-border);
+      }
+
+      .token-row {
+        grid-template-columns: 1fr auto;
+      }
+
+      .mini-row {
+        grid-template-columns: 88px minmax(0, 1fr);
+      }
+
+      .mini-content,
+      .prompt-card p,
+      .card-preview p {
+        color: var(--muted);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+      }
+
+      .radius-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-2);
+      }
+
+      .radius-card,
+      .prompt-card {
+        padding: var(--space-3);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-card);
+        background: var(--surface-bg-muted);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .radius-demo {
+        aspect-ratio: 1;
+        width: 100%;
+        border: 1px solid var(--surface-border-strong);
+        background: var(--surface-bg);
+      }
+
+      .radius-name {
+        margin-top: var(--space-2);
+        color: var(--ink);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        font-weight: 600;
+      }
+
+      .radius-value {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: var(--label-size);
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: var(--button-height);
+        padding: 0 var(--space-3);
+        border-radius: var(--button-radius);
+        font-family: var(--font-body);
+        font-size: var(--button-font-size);
+        font-weight: var(--button-weight);
+        line-height: 1;
+        letter-spacing: normal;
+      }
+
+      .cta-primary {
+        border: 1px solid transparent;
+        background: #171717;
+        color: #ffffff;
+        border-radius: 999px;
+      }
+
+      .cta-secondary {
+        border: 1px solid #171717;
+        background: #ffffff;
+        color: #171717;
+        border-radius: 999px;
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .card-preview {
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid color-mix(in srgb, var(--surface-border-strong) 72%, transparent);
+        background: var(--surface-bg);
+        color: var(--ink);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 2px rgba(0, 0, 0, 0.04), 0 8px 8px -8px rgba(0, 0, 0, 0.04);
+      }
+
+      .card-preview h4 {
+        margin: 0 0 var(--space-1);
+      }
+
+      .source-shell {
+        position: sticky;
+        top: var(--page-padding);
+      }
+
+      .source-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-4) var(--space-2);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .file-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px var(--space-3);
+      }
+
+      .file-tab {
+        padding: 0 0 var(--space-2);
+        border-bottom: 2px solid transparent;
+      }
+
+      .file-tab.active {
+        color: var(--ink);
+        border-bottom-color: var(--ink);
+        font-weight: 600;
+      }
+
+      .source-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-4);
+        border-bottom: 1px solid var(--surface-border);
+      }
+
+      .segmented {
+        display: inline-flex;
+        padding: 3px;
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius-pill);
+        background: var(--surface-bg-muted);
+      }
+
+      .segmented button {
+        border: 0;
+        border-radius: var(--radius-pill);
+        background: transparent;
+        padding: 6px 12px;
+        cursor: pointer;
+      }
+
+      .segmented button.is-active {
+        background: var(--surface-bg);
+        color: var(--ink);
+        box-shadow: var(--surface-shadow-soft);
+      }
+
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        margin-left: auto;
+      }
+
+      .ghost-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1px solid var(--surface-border);
+        border-radius: 6px;
+        background: var(--surface-bg);
+        box-shadow: var(--surface-shadow-soft);
+        cursor: pointer;
+      }
+
+      .source-body {
+        max-height: calc(100vh - (var(--page-padding) * 2) - 120px);
+        overflow: auto;
+      }
+
+      .source-view,
+      .rendered-view {
+        margin: 0;
+        padding: var(--space-4);
+      }
+
+      .source-view {
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: var(--source-size);
+        line-height: var(--source-line);
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: var(--surface-bg);
+      }
+
+      .rendered-view {
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: var(--body-size);
+        line-height: var(--body-line);
+        background: var(--surface-bg);
+      }
+
+      .rendered-view[hidden],
+      .source-view[hidden] {
+        display: none;
+      }
+
+      .rendered-view h2,
+      .rendered-view h3 {
+        margin: var(--space-4) 0 var(--space-2);
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-weight: 600;
+      }
+
+      .rendered-view h2 {
+        font-size: var(--section-size);
+        line-height: var(--section-line);
+        letter-spacing: var(--section-track);
+      }
+
+      .rendered-view h2:first-child {
+        margin-top: 0;
+      }
+
+      .rendered-view h3 {
+        color: var(--muted);
+        font-size: calc(28px - 4px);
+        line-height: calc(32px - 4px);
+      }
+
+      .rendered-view p,
+      .rendered-view li {
+        color: var(--muted);
+      }
+
+      .rendered-view ul,
+      .rendered-view ol {
+        margin: 0 0 var(--space-3) 20px;
+        padding: 0;
+      }
+
+      .rendered-view table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: var(--space-2) 0 var(--space-4);
+      }
+
+      .rendered-view th,
+      .rendered-view td {
+        padding: var(--space-2) var(--space-2);
+        border: 1px solid var(--surface-border);
+        text-align: left;
+        vertical-align: top;
+        font-size: var(--label-size);
+        line-height: var(--label-line);
+      }
+
+      .rendered-view th {
+        color: var(--ink);
+        background: var(--surface-bg-muted);
+      }
+
+      .rendered-view code {
+        padding: 0.14em 0.4em;
+        border-radius: 6px;
+        background: var(--surface-bg-muted);
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 0.92em;
+      }
+
+      @media (max-width: 1120px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .source-shell {
+          position: relative;
+          top: 0;
+        }
+
+        .source-body {
+          max-height: none;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .shell {
+          width: min(100vw - (12px * 2), 100%);
+          padding-top: 12px;
+        }
+
+        .panel-inner,
+        .source-view,
+        .rendered-view {
+          padding-left: var(--space-3);
+          padding-right: var(--space-3);
+        }
+
+        .palette-row,
+        .palette-row.neutral-row,
+        .theme-mode-grid,
+        .theme-swatch-row,
+        .split-card,
+        .radius-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .type-row,
+        .mini-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <div class="layout">
+        <section class="stack">
+          <article class="panel hero-card">
+            <div class="panel-inner">
+              <div class="eyebrow">Design Preview</div>
+              <h1 class="site-title">互动式中文个人作品集</h1>
+              <p class="descriptor">整体体验应像打开一位设计师正在使用的工作桌：首屏轻松、私密、有生活痕迹；向下浏览后逐渐进入更克制的作品展映空间。首页负责“建立人格”，项目区负责“建立专业可信度”，页脚再回到直接、友好...</p>
+              <div class="chip-row"><span class="chip">暖白纸张底色与深墨色文字，避免纯白页面的冷感。</span><span class="chip">中文主信息保持高可读性；手写字体只用于英文姓名、签名或极短的情绪...</span><span class="chip">首屏使用可拖拽卡片、轻微指针视差和可选声音控制，制造“这是活的”...</span><span class="chip">项目内容放进离视口边缘 30px 的大圆角画框，媒体是主角，UI...</span><span class="chip">章节之间不是普通分割线，而是通过背景明暗、sticky 接力和尺...</span></div>
+              <p class="summary">整体体验应像打开一位设计师正在使用的工作桌：首屏轻松、私密、有生活痕迹；向下浏览后逐渐进入更克制的作品展映空间。首页负责“建立人格”，项目区负责“建立专业可信度”，页脚再回到直接、友好的个人邀请。</p>
+              <a class="observed-link" href="https://jackiehu.design/" target="_blank" rel="noreferrer">https://jackiehu.design/</a>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Palette</h2>
+              <p class="section-subtitle">Roles and neutrals rendered using the extracted design system rather than a separate display theme.</p>
+              <div class="palette-grid"><div class="palette-row"><div class="swatch">
+    <div class="swatch-box" style="background:#fafafa;"></div>
+    <div class="swatch-label">Background</div>
+    <div class="swatch-meta">
+      <span>#fafafa</span>
+      <span>Page surface</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#ffffff;"></div>
+    <div class="swatch-label">Surface</div>
+    <div class="swatch-meta">
+      <span>#ffffff</span>
+      <span>Elevated surface</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#171717;"></div>
+    <div class="swatch-label">Ink</div>
+    <div class="swatch-meta">
+      <span>#171717</span>
+      <span>Primary text</span>
+    </div>
+  </div></div><div class="palette-row neutral-row"><div class="swatch">
+    <div class="swatch-box" style="background:#4d4d4d;"></div>
+    <div class="swatch-label">Muted</div>
+    <div class="swatch-meta">
+      <span>#4d4d4d</span>
+      <span>Supporting text</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#0072f5;"></div>
+    <div class="swatch-label">Accent</div>
+    <div class="swatch-meta">
+      <span>#0072f5</span>
+      <span>Interactive accent</span>
+    </div>
+  </div><div class="swatch">
+    <div class="swatch-box" style="background:#ebebeb;"></div>
+    <div class="swatch-label">Border</div>
+    <div class="swatch-meta">
+      <span>#ebebeb</span>
+      <span>Divider</span>
+    </div>
+  </div></div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Theme Modes</h2>
+              <p class="section-subtitle">If the product supports light and dark themes, both modes should stay visible in the exported design system and preview.</p>
+              <div class="prompt-card"><strong>Single mode detected</strong><p>No explicit <code>Theme Modes</code> section was detected in the markdown. If the product supports both light and dark themes, document both so the preview can render them side by side.</p></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Typography</h2>
+              <p class="section-subtitle">The preview shell itself now uses the extracted typography stack, sizes, line heights, and tracking.</p>
+              <div class="type-list"><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div><div class="type-row">
+        <div class="type-role">undefined</div>
+        <div
+          class="type-sample"
+          style="font-size:16px; line-height:22px; font-weight:500; letter-spacing:normal; font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;"
+        >
+          The quick brown fox jumps
+        </div>
+        <div class="type-metrics">undefined • undefined • undefined</div>
+      </div></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Spacing &amp; Shape</h2>
+              <p class="section-subtitle">Spacing, panel padding, and radius tokens are mapped directly from the layout rules in the markdown.</p>
+              <div class="split-card">
+    <div>
+      <h3 class="token-heading">Spacing</h3>
+      <div class="token-table"><div class="token-row">
+        <span>Base unit</span>
+        <span>8px</span>
+      </div><div class="token-row">
+        <span>Step 2</span>
+        <span>12px</span>
+      </div><div class="token-row">
+        <span>Step 3</span>
+        <span>16px</span>
+      </div><div class="token-row">
+        <span>Step 4</span>
+        <span>24px</span>
+      </div><div class="token-row">
+        <span>Step 5</span>
+        <span>32px</span>
+      </div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Border Radius</h3>
+      <div class="radius-grid"><div class="radius-card">
+        <div class="radius-demo" style="border-radius:6px;"></div>
+        <div class="radius-name">Micro utility</div>
+        <div class="radius-value">6px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:8px;"></div>
+        <div class="radius-name">Standard module</div>
+        <div class="radius-value">8px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:999px;"></div>
+        <div class="radius-name">Category rail</div>
+        <div class="radius-value">999px</div>
+      </div><div class="radius-card">
+        <div class="radius-demo" style="border-radius:999px;"></div>
+        <div class="radius-name">CTA pill</div>
+        <div class="radius-value">999px</div>
+      </div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Components</h2>
+              <p class="section-subtitle">Buttons and cards use the documented height, weight, radius, colors, and surface treatment.</p>
+              <div class="component-card">
+    <div class="button-row">
+      <span class="cta cta-primary">Start Deploying</span>
+      <span class="cta cta-secondary">Get a Demo</span>
+    </div>
+    <div class="card-preview">
+      <h4>System Card Preview</h4>
+      <p>White framed module with restrained shadow and precise spacing.</p>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">System Notes</h2>
+              <p class="section-subtitle">Responsive behavior and depth rules stay visible while keeping the overall proportions calm and readable.</p>
+              <div class="split-card">
+    <div>
+      <h3 class="token-heading">Breakpoints</h3>
+      <div class="mini-grid"><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Elevation</h3>
+      <div class="mini-grid"><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div><div class="mini-row">
+            <div class="mini-label">undefined</div>
+            <div class="mini-content"><strong>undefined</strong><br />undefined</div>
+          </div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-inner">
+              <h2 class="section-title">Prompt Guide</h2>
+              <p class="section-subtitle">Prompt snippets are shown in the same typography and spacing language as the extracted design system.</p>
+              <div class="prompt-list"><div class="prompt-card"><strong>Quick Summary</strong><p>这是一个面向中文阅读的互动设计师作品集。首屏像真实工作桌，暖纸色、手写签名、等宽注释和可拖拽物件共同建立人格；项目区转入深色展映场景，用 30px 内缩、16px 圆角的白色大画框承载全屏媒体和紧凑项目叙事。动效轻快、有弹性，但只服务于发现、播放、展开和项目接力。中文采用高可读无衬线，正文 17–19px、1.65 以上行高，不用花体。页面最终在全屏深色联系方式中收束。</p></div><div class="prompt-card">
+            <strong>项目卡：创建高 120px、圆角 16px 的暖白项目条目，左侧项目名与一句价值，右侧年份与职责；hover 时标题横移 8px，并在指针附近展开 16</strong>
+            <p>9 预览图；移动端点击展开预览。</p>
+          </div><div class="prompt-card">
+            <strong>项目画框：在 #0A0A0A 背景中放置距视口 30px、圆角 16px、#FAFAFA 的沉浸式画框，顶部是可播放的 16</strong>
+            <p>9 媒体，向下依次出现 56px 项目标题、窄列说明、错位过程图片和成果标签。</p>
+          </div><div class="prompt-card"><strong>Ready-to-Use Prompt</strong><p>```text 请设计并实现一个原创的中文个人设计作品集首页，整体概念为“可玩的个人案头 × 沉浸式作品放映框”。灵感来自生活化、可触碰的个人主页和全屏媒体型项目框架，但不要复制任何参考网站的具体素材、文案、人物形象或品牌元素。</p></div></div>
+              <div class="split-card" style="margin-top:var(--space-4);">
+    <div>
+      <h3 class="token-heading">Do</h3>
+      <div class="mini-grid"><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">用真实过程物件和项目素材建立个性，而不是下载通用 3D 装饰。</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">让一个模块只承担一种主要交互：首屏探索、项目区滚动、能力区展开、页脚联系。</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">保持中文正文清楚、行长适中、标点自然。</div></div><div class="mini-row"><div class="mini-label">Do</div><div class="mini-content">在桌面提供 hover 和拖拽，在移动端提供点击/手风琴等明确替代方案。</div></div></div>
+    </div>
+    <div>
+      <h3 class="token-heading">Don't</h3>
+      <div class="mini-grid"><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">不要把两个参考网站的 logo、文案、人物物件或项目素材直接复制到新站。</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">不要在每一屏都放跟随光标、磁吸按钮和滚动劫持。</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">不要用花体显示中文标题或正文；不要为了“高级”把正文压到 12px。</div></div><div class="mini-row"><div class="mini-label">Don't</div><div class="mini-content">不要让装饰盖住主 CTA，或让用户必须拖拽才能看到关键信息。</div></div></div>
+    </div>
+  </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="source-shell">
+          <article class="panel">
+            <div class="source-header">
+              <div class="file-tabs">
+                <span class="file-tab">design-system.md</span>
+                <span class="file-tab active">DESIGN.md</span>
+                <span class="file-tab">Design JSON</span>
+                <span class="file-tab">CSS Variables</span>
+                <span class="file-tab">Design Tokens</span>
+              </div>
+            </div>
+            <div class="source-toolbar">
+              <div class="segmented" role="tablist" aria-label="View Switcher">
+                <button class="is-active" data-view="source" type="button">Source</button>
+                <button data-view="preview" type="button">Preview</button>
+              </div>
+              <div class="toolbar-actions">
+                <button class="ghost-button" id="copyButton" type="button">Copy</button>
+                <a class="ghost-button" href="DESIGN.md" download>Open .md</a>
+                <span class="copy-state" id="copyState"></span>
+              </div>
+            </div>
+            <div class="source-body">
+              <pre class="source-view" id="sourceView"># Design System: 互动式中文个人作品集
+
+&gt; 设计方向：**可玩的个人案头 × 沉浸式作品放映框**  
+&gt; 参考来源：Jackie Hu 的生活化、可触碰式首页；Pacôme Pertant 的全屏媒体框架、暗场切换与连续项目叙事。本文不是复刻任一网站，而是把两者转译为适合中文设计师作品集的原创系统。
+
+## 1. Visual Theme &amp; Atmosphere｜视觉主题与氛围
+
+整体体验应像打开一位设计师正在使用的工作桌：首屏轻松、私密、有生活痕迹；向下浏览后逐渐进入更克制的作品展映空间。首页负责“建立人格”，项目区负责“建立专业可信度”，页脚再回到直接、友好的个人邀请。
+
+- **整体感受**：温暖、聪明、有趣，但不幼稚；实验感来自交互和构图，不依赖花哨装饰。
+- **视觉密度**：首屏高密度、正文中密度、项目详情低密度、页脚重新放大。
+- **品牌姿态**：像一位愿意展示过程和个性的设计师，而不是一间无名的模板工作室。
+- **核心母题**：散落物件、便签/系统小窗口、等宽注释、内嵌放映框、滚动接力、旋转贴纸。
+- **场景节奏**：暖纸色个人空间 → 白色项目阅读面板 → 深色放映与下一项目舞台 → 全屏联系收尾。
+
+### Key Characteristics｜关键特征
+
+- 暖白纸张底色与深墨色文字，避免纯白页面的冷感。
+- 中文主信息保持高可读性；手写字体只用于英文姓名、签名或极短的情绪性词语。
+- 首屏使用可拖拽卡片、轻微指针视差和可选声音控制，制造“这是活的”第一印象。
+- 项目内容放进离视口边缘 30px 的大圆角画框，媒体是主角，UI 尽量退后。
+- 章节之间不是普通分割线，而是通过背景明暗、sticky 接力和尺度变化完成转场。
+
+## 2. Color Palette &amp; Roles｜色彩与角色
+
+| 角色 | 语义名称 | 色值 | 用法 |
+| --- | --- | --- | --- |
+| 主背景 | 暖纸白 | `#FFFAF5` | 首屏、简介、能力模块的大面积背景 |
+| 项目表面 | 展签白 | `#FAFAFA` | 项目画框、内容面板、菜单展开层 |
+| 暗场背景 | 深墨黑 | `#0A0A0A` | 项目转场、全屏联系区、媒体舞台 |
+| 主文字 | 石墨 | `#3E3E42` | 暖色页面的标题与正文 |
+| 次级文字 | 灰褐 | `#69645E` | 项目说明、次要信息 |
+| 弱文字 | 铅灰 | `#8F8D8C` | 元数据、社交链接、年份 |
+| 交互强调 | 数字薄荷 | `#21FFC0` | 滚动提示、播放状态、焦点环、少量贴纸 |
+| 暗场文字 | 柔白 | `#FAFAFA` | 深色区域的标题、正文与链接 |
+| 暖色边界 | 纸边 | `#E8E0D8` | 浅色卡片边缘，低对比 1px |
+| 暗色边界 | 夜间描边 | `rgba(250,250,250,.16)` | 深色区域的分隔与控件边界 |
+
+### Primary
+
+- `#FFFAF5` 是人格层的主色，承接 Jackie Hu 页面观察到的暖白背景。
+- `#0A0A0A` 与 `#FAFAFA` 是项目展映层的黑白基座，承接 Digital Travel 的暗场/白色内框结构。
+
+### Interactive
+
+- 唯一高饱和强调色使用 `#21FFC0`；只出现在当前可操作点，不作为大面积装饰。
+- 链接默认继承文字色，hover 时下划线从左向右生长或文字横移 `8–12px`。
+- 键盘焦点使用 `2px #21FFC0` 外环，外偏移 `3px`，不能只靠颜色表达状态。
+
+### Neutral Scale
+
+- 强信息：`#3E3E42` / 暗场 `#FAFAFA`。
+- 正文：`#69645E` / 暗场 `rgba(250,250,250,.78)`。
+- 元数据：`#8F8D8C` / 暗场 `rgba(250,250,250,.55)`。
+- 边界：`#E8E0D8` / 暗场 `rgba(250,250,250,.16)`。
+
+### Surface &amp; Overlay
+
+- 暖色卡片：`#FCF7F2` 或 `#FDF8F4`，与背景只产生轻微色差。
+- 媒体画框：`#FAFAFA`，桌面距视口四边 `30px`，移动端 `15px`。
+- 菜单展开层：浅色实底，不使用重玻璃拟态；深色场景中展开为白色大圆角面板。
+- 媒体 hover 遮罩：`rgba(10,10,10,.45)`，文字使用柔白。
+
+### Theme Modes｜主题场景
+
+这不是传统的全站亮/暗主题切换，而是由内容驱动的场景切换。
+
+#### Light Mode｜人格与说明场景
+
+- 背景：`#FFFAF5`
+- 表面：`#FCF7F2`、`#FAFAFA`
+- 文字：`#3E3E42`
+- 强调：`#21FFC0`
+- 用于：首屏、个人简介、专业能力、项目文字面板。
+
+#### Dark Mode｜展映与联系场景
+
+- 背景：`#0A0A0A`
+- 表面：深墨背景上的 `#FAFAFA` 媒体框或无边媒体。
+- 文字：`#FAFAFA`
+- 强调：`#21FFC0`
+- 用于：项目之间的 sticky 过渡、下一项目预告、全屏联系方式。
+
+### Shadows &amp; Depth
+
+- 大部分层级依靠色差、遮挡和尺度，不依靠阴影。
+- 浮动便签可用 `0 8px 30px rgba(62,50,42,.10)`。
+- 媒体缩略图可用 `0 4px 8px rgba(0,0,0,.20)`，尤其用于轻微旋转的展示卡。
+- 浅色项目条目优先用 `1px solid #E8E0D8` 或极轻内描边，避免电商式卡片阴影。
+
+## 3. Typography Rules｜中文排版规范
+
+### Font Family
+
+- **中文主字体**：`PingFang SC`, `Noto Sans SC`, `HarmonyOS Sans SC`, `Microsoft YaHei`, sans-serif。
+- **西文与数字主字体**：`Inter`, `Helvetica Neue`, Arial, sans-serif；如有授权可使用 Indivisible Variable 类似的中性 grotesk。
+- **等宽标签**：`IBM Plex Mono`, `Noto Sans Mono`, monospace。
+- **个性手写**：仅限英文姓名/签名，可选 Historia Sky Script、Felt Tip 类字体或自制 SVG 签名；不得用于中文长句。
+- **OpenType**：数字表格可启用 `tabular-nums`；中文标点使用系统默认比例，不人为拉大字距。
+
+### Hierarchy
+
+| 角色 | 字体 | 桌面尺寸 | 移动尺寸 | 字重 | 行高 | 字距 | 说明 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 首屏中文主张 | 中文无衬线 | `clamp(64px, 7vw, 112px)` | `42–56px` | 500 | `1.02–1.08` | `-0.02em`（仅西文）；中文 `0` | 最多两行，每行建议 8–14 个汉字 |
+| 英文签名 | 手写/展示体 | `80–120px` | `64–72px` | 400 | `1.0–1.2` | `0` | 作为人格图形，不承担关键信息 |
+| 项目标题 | 中文无衬线 | `56px` | `40px` | 500 | `1.0` | 中文 `0` | 与 Digital Travel 观察值一致地保持紧凑 |
+| 章节标题 | 中文无衬线 | `36–48px` | `30–36px` | 500 | `1.15` | `0` | 简短、直白 |
+| 大段自我介绍 | 中文无衬线 | `32–48px` | `24–30px` | 400/500 | `1.35–1.5` | `0` | 可在句中插入小图或关键词标签 |
+| 正文 | 中文无衬线 | `17–19px` | `16–18px` | 400 | `1.65–1.8` | `0` | 每行约 22–32 个汉字 |
+| 导航/按钮 | 中文无衬线 | `16–18px` | `16–18px` | 500 | `1.0–1.2` | `0` | 点击区不小于 44px |
+| 模块标签 | 等宽字体 | `14–16px` | `13–14px` | 500 | `1.4` | 西文 `0`；中文 `0.02em` 最大 | 用于序号、年份、职责、工具 |
+| 页脚巨型文字 | 中文无衬线 | `clamp(72px, 11vw, 168px)` | `52–72px` | 500 | `.92–1.0` | `-0.03em`（西文） | “一起做点有意思的事”或“联系我” |
+
+### Principles
+
+- 中文正文不套用西文常见的负字距；小字号中文避免全大写式的机械分散排版。
+- 一行不超过 32 个汉字，项目说明控制在 3–5 行；复杂信息用元数据列拆开。
+- 中文与英文/数字之间保留自然空格，例如“完成 3 个核心流程”，不要把中英文挤在一起。
+- 标题可以紧，正文必须松；标题与正文的层级主要靠尺度而非多种字重。
+- 避免花体中文。个性通过构图、贴纸、动效和用词体现。
+
+## 4. Component Stylings｜组件风格
+
+### Buttons and Links
+
+- **主按钮**：深墨底/柔白字或薄荷底/深墨字，高 `46–48px`，左右内边距 `20–24px`，圆角 `999px`。
+- **次按钮**：透明底、1px 低对比描边；hover 时背景轻微填充。
+- **文本链接**：不默认使用蓝色。hover 时文字横移 `8px` 并出现箭头 `↗` 或下划线。
+- **播放按钮**：鼠标进入媒体时出现薄荷色圆角标签“播放 / PLAY”，跟随指针但限制在媒体边界内；触屏端固定在右下角。
+- **声音控制**：48px 圆形固定按钮，默认静音，不自动播放声音，并明确显示状态。
+
+### Cards and Containers
+
+- **项目列表条目**：暖白表面，高 `112–128px`，圆角 `16px`；左侧项目名，右侧年份/职责；hover 时预览图从边缘或指针附近展开。
+- **项目大画框**：桌面 `calc(100vw - 60px)`，移动端 `calc(100vw - 30px)`；圆角 `16px`，overflow hidden。
+- **能力卡**：不要做成普通四宫格 SaaS 卡片。使用 3 个可轻微错位的“工作方法便签”，宽度不完全一致，信息仍对齐到 12 栏网格。
+- **系统小窗口**：用于首屏的“正在做 / 可合作 / 当前城市”，圆角 `12–16px`，可拖拽，带极简窗口标题条。
+
+### Inputs and Interactive Controls
+
+- 联系方式以 mailto、复制邮箱、社交链接为主，不强制加入表单。
+- 如使用表单：仅姓名、邮箱、项目描述三项；底部细线输入或暖白实体输入，focus 使用薄荷色 2px 环。
+- 所有 draggable 元素必须有键盘替代方式；拖拽不是获取信息的唯一途径。
+
+### Navigation
+
+- 桌面默认只显示左上角个人标记与右上角胶囊“菜单”。
+- 菜单按钮高 `48px`、圆角 `24px`；展开为大圆角浅色面板，链接使用 `56–80px` 大字号。
+- 页面滚动时导航保持固定，但避免大面积毛玻璃顶栏。
+- 导航项：作品 / 关于 / 能力 / 联系；当前位置可用小圆点或薄荷色短线标记。
+
+### Image Treatment
+
+- 首屏物件允许透明 PNG、手绘草图、票据、头像、界面截片混排，边缘可超出视口。
+- 项目媒体保持原始比例，主封面优先 `16:9`；案例过程图可左右错位形成阅读节奏。
+- 图片圆角遵循 `8 / 12 / 16 / 20px`，不要每张图都套阴影。
+- 避免通用图库图片；优先真实设计稿、过程草图、原型动图和结果数据。
+
+### Distinctive Components｜标志性组件
+
+1. **可玩的个人案头 Hero**：中央主张与签名稳定，周围 6–10 个物件轻微视差；其中 1–2 个可拖拽，2 个可点击播放/翻面。
+2. **行内人格片段**：大段个人介绍中嵌入小头像、工具图标、手写关键词或城市时间，不做传统左图右文。
+3. **沉浸式项目画框**：媒体封面占据画框首屏，向下才出现标题、职责、问题、方法和成果。
+4. **下一项目 Sticky 接力**：当前项目结束后深色舞台固定一屏，继续滚动时下一项目封面从中央放大接管屏幕。
+5. **全屏联系终章**：巨大中文邀请、邮箱、社交链接与一个可旋转/拖动的签名贴纸。
+
+## 5. Layout Principles｜布局原则与模块分配
+
+### 首页信息架构
+
+| 模块 | 建议高度 | 视觉呈现 | 交互职责 |
+| --- | --- | --- | --- |
+| 01 首屏 | `100svh`，最少 `760px` | 暖纸白背景；中央中文主张 + 英文签名；周围散落真实设计物件；左下状态、右下滚动提示 | 指针轻视差、可拖拽便签、媒体播放/静音、点击物件显示一句故事 |
+| 02 个人简介 | `90–130vh` | 12 栏中放置 2–3 行超大中文自述，句中插入小图、地点、关键词；下方一行短履历 | 文字随滚动逐词从 50% 灰度变为实色；行内图片轻微弹出 |
+| 03 精选作品 | 每个项目 `140–220vh` | 进入深色舞台；每个项目是距边缘 30px 的白色大圆角画框；封面媒体 → 标题与摘要 → 过程媒体 → 成果 | hover 出现“查看案例”；滚动驱动媒体/文字揭示；项目末尾 sticky 进入下一项目 |
+| 04 专业能力优势 | `100–140vh` | 回到暖纸白；三张错位方法便签：洞察与策略 / 体验与视觉 / 原型与交付；配一条端到端流程 | 桌面 hover 展开案例证据，点击固定；移动端改为手风琴，不依赖 hover |
+| 05 全屏页脚联系方式与收尾 | `100svh` | 深墨黑；巨大“聊聊你的项目”或“一起做点有意思的事”；邮箱和社交链接；右下年份与城市 | 复制邮箱反馈、链接文字滑动、签名贴纸轻微旋转；滚到底后动效停止 |
+
+### 各模块的具体内容建议
+
+#### 01 首屏
+
+- 主标题示例：“把复杂问题，做成自然好用的体验。”
+- 辅助说明：“产品设计 / 体验策略 / 视觉系统，现居上海，可远程合作。”
+- 人格物件建议：最近项目原型、草图纸、音乐播放条、相机/票据、当前书籍、一个系统分享弹窗。
+- 首屏只设一个明确 CTA：“查看精选作品 ↓”；其他物件是探索性入口。
+- 中央文字不可随指针大幅移动；视差只作用在边缘物件，位移 `2–10px`。
+
+#### 02 个人简介
+
+- 不用证件照 + 简历段落模板。
+- 采用编辑式大句：“我关注产品里那些容易被忽略的小瞬间，并用研究、原型与视觉把它们变得清楚、顺手、令人愉快。”
+- 在“研究 / 原型 / 视觉”之间嵌入三个小图标或真实过程片段。
+- 补充 3 个可信信号：年限、合作行业/客户、当前关注方向；不要堆公司 logo 墙。
+
+#### 03 精选作品
+
+- 首页精选 3 个项目最合适，最多 4 个。
+- 每个项目首页摘要只保留：项目名、1 句价值、职责、年份、1 个成果数字。
+- 项目 1 用全屏视频或高质量动图做强开场；项目 2 用静态界面与过程叙事；项目 3 展示系统性或品牌能力。
+- 项目画框内部使用左右错位的 6 栏媒体：左、右、左，形成 Digital Travel 式连续观影节奏。
+- 下一项目预告使用深色 sticky 一屏，封面居中，标签轻微旋转，但不要每个项目都重复所有花样。
+
+#### 04 专业能力优势
+
+- 模块标题：“我如何把项目推向完成”。
+- 三项优势结构统一为：能力名称 / 一句话方法 / 可验证的项目证据 / 相关工具。
+- 推荐内容：① 研究与问题定义；② 交互原型与体验验证；③ 视觉系统与开发协作。
+- 卡片 hover 展开证据图，卡片本身只移动 `4–8px`，不用 3D 翻转。
+
+#### 05 全屏联系方式与收尾
+
+- 主要文案：“有一个值得认真做的想法？我们聊聊。”
+- 主 CTA 是可复制邮箱，文字可用 `clamp(36px, 6vw, 88px)`。
+- 次级信息：微信/邮箱、LinkedIn/即刻/小红书等真实渠道、所在地、可合作状态。
+- 最后一行保持克制：“设计与构建于 2026 / 上海”，并提供回到顶部。
+
+### Spacing System
+
+- 基础单位：`4px`。
+- 常用间距：`8 / 12 / 16 / 24 / 30 / 40 / 60 / 90 / 120 / 180px`。
+- 项目系统参考：桌面外边距 `30px`、栏间距 `16px`；移动端外边距 `15px`。
+
+### Grid &amp; Container
+
+- 桌面：12 栏网格，左右边距 `30px`，gutter `16px`，内容最大宽度 `1600px`。
+- 平板：8 栏，左右边距 `24px`，gutter `16px`。
+- 移动：4 栏，左右边距 `15–20px`，gutter `12px`。
+- 中文正文列宽桌面不超过 `640px`；项目说明可占 5–6 栏，媒体占 6–10 栏。
+
+### Whitespace Philosophy
+
+- 首屏通过物件制造密度，但核心文字周围保留至少 `120px` 安全区。
+- 项目区让媒体占据大面积，文字块保持窄而清晰。
+- 能力区使用错位而非无序；所有卡片的文字基线仍落在网格上。
+- 每个强互动之后安排一段安静阅读区，避免全程都在“表演”。
+
+### Border Radius Scale
+
+- 微型：`4px`，仅小标签/焦点细节。
+- 标准：`8px`，过程图与小卡片。
+- 中型：`12px`，缩略图、便签、表单。
+- 大型：`16–20px`，项目画框、菜单与主卡片。
+- 胶囊：`999px`，按钮、状态标签、滚动提示。
+
+## 6. Depth &amp; Elevation｜层级与深度
+
+| 级别 | 处理 | 用途 |
+| --- | --- | --- |
+| Flat | 纯色背景，无阴影 | 正文、项目说明、暗场 |
+| Ring | 1px 低对比描边 | 能力便签、次级按钮 |
+| Card | 轻色差 + `0 8px 30px rgba(62,50,42,.10)` | 可拖拽窗口、浮动便签 |
+| Focus | `0 0 0 2px #21FFC0` + 3px offset | 键盘焦点、当前交互 |
+| Stage | 黑色满屏背景 + 白色内框遮挡 | 精选项目和下一项目转场 |
+
+### Depth Principles
+
+- “纸上物件”允许浅阴影，“数字画框”主要依靠黑白反差。
+- 旋转角度控制在 `-6°–6°`；正文与关键按钮保持水平。
+- 不使用大面积背景模糊。菜单和媒体遮罩应保持清楚、实在。
+- 动态遮挡比静态阴影更重要：卡片被拖到上层、下一项目封面盖过旧项目。
+
+## 7. Do&#39;s and Don&#39;ts｜执行边界
+
+### Do
+
+- 用真实过程物件和项目素材建立个性，而不是下载通用 3D 装饰。
+- 让一个模块只承担一种主要交互：首屏探索、项目区滚动、能力区展开、页脚联系。
+- 保持中文正文清楚、行长适中、标点自然。
+- 在桌面提供 hover 和拖拽，在移动端提供点击/手风琴等明确替代方案。
+- 支持 `prefers-reduced-motion`，把复杂位移动画降级为淡入与直接切换。
+
+### Don&#39;t
+
+- 不要把两个参考网站的 logo、文案、人物物件或项目素材直接复制到新站。
+- 不要在每一屏都放跟随光标、磁吸按钮和滚动劫持。
+- 不要用花体显示中文标题或正文；不要为了“高级”把正文压到 12px。
+- 不要让装饰盖住主 CTA，或让用户必须拖拽才能看到关键信息。
+- 不要自动播放有声媒体；不要移除原生滚动条或制造过强惯性滚动。
+- 不要在手机端保留超出屏幕、无法触达的桌面散落物件。
+
+## 8. Responsive Behavior｜响应式规范
+
+### Breakpoints
+
+| 名称 | 宽度 | 关键变化 |
+| --- | --- | --- |
+| Mobile | `&lt; 768px` | 4 栏；外边距 15px；项目标题 40px；首屏物件减到 4–6 个；拖拽改为点击/横滑；项目媒体单列 |
+| Tablet | `768–1199px` | 8 栏；外边距 24px；减少超出视口的装饰；项目文字与媒体保持 5/7 或 4/4 分栏 |
+| Desktop | `≥ 1200px` | 12 栏；外边距 30px；启用指针视差、hover 预览、有限拖拽和 sticky 项目接力 |
+| Wide | `≥ 1600px` | 限制正文与主框最大宽度；物件向两侧扩展，不无限放大字号 |
+
+### Touch Targets
+
+- 所有按钮/图标点击区至少 `44×44px`，推荐 `48×48px`。
+- 移动端链接之间最少垂直间距 `12px`。
+- 触屏不显示跟随指针标签；改为固定标签或首击展开、再击进入。
+
+### Collapsing Strategy
+
+- **首屏**：桌面散落物件围绕中央文字；移动端改成纵向构图，关键物件进入安全区，纯装饰物件隐藏。
+- **个人简介**：桌面 2–3 行超大叙述；移动端变为 4–6 行，行内图片缩小到 28–44px。
+- **精选作品**：桌面画框内左右错位；移动端所有媒体单列居中，宽约 `248–330px`，保留 15px 外框。
+- **能力优势**：桌面错位便签；移动端按顺序堆叠为手风琴。
+- **页脚**：桌面巨型横向邀请；移动端拆为两到三行，邮箱允许换行或显示复制按钮。
+- **菜单**：桌面从右上胶囊展开；移动端展开为四周留 15px 的近全屏圆角面板。
+
+## 9. Agent Prompt Guide｜可直接使用的生成提示词
+
+### Quick Color Reference
+
+- 主 CTA：`#0A0A0A` 底 / `#FAFAFA` 字，或 `#21FFC0` 底 / `#0A0A0A` 字。
+- 首页背景：`#FFFAF5`。
+- 项目表面：`#FAFAFA`。
+- 深色舞台：`#0A0A0A`。
+- 主文字：`#3E3E42`。
+- 边界：`#E8E0D8`。
+- 强调：`#21FFC0`。
+
+### Quick Summary
+
+这是一个面向中文阅读的互动设计师作品集。首屏像真实工作桌，暖纸色、手写签名、等宽注释和可拖拽物件共同建立人格；项目区转入深色展映场景，用 30px 内缩、16px 圆角的白色大画框承载全屏媒体和紧凑项目叙事。动效轻快、有弹性，但只服务于发现、播放、展开和项目接力。中文采用高可读无衬线，正文 17–19px、1.65 以上行高，不用花体。页面最终在全屏深色联系方式中收束。
+
+### Example Component Prompts
+
+- **Hero**：创建一个 100svh 的暖纸色互动首屏，中央是两行中文价值主张和英文手写签名，周围布置 6–10 个来自真实设计过程的透明物件；物件有 2–10px 指针视差，其中一张便签可拖拽，一段媒体可播放，核心文字始终稳定清晰。
+- **项目卡**：创建高 120px、圆角 16px 的暖白项目条目，左侧项目名与一句价值，右侧年份与职责；hover 时标题横移 8px，并在指针附近展开 16:9 预览图；移动端点击展开预览。
+- **项目画框**：在 `#0A0A0A` 背景中放置距视口 30px、圆角 16px、`#FAFAFA` 的沉浸式画框，顶部是可播放的 16:9 媒体，向下依次出现 56px 项目标题、窄列说明、错位过程图片和成果标签。
+- **导航**：右上角 48px 高胶囊菜单固定在视口；点击后展开为白色大圆角面板，使用 64–80px 的作品/关于/能力/联系链接，带轻微弹簧过渡和清晰键盘焦点。
+- **页脚**：创建 100svh 深墨黑联系区，用 72–168px 的中文邀请作为视觉中心，下面是可复制邮箱、社交链接、所在城市和可合作状态，加入一个轻微旋转的签名贴纸与回到顶部链接。
+
+### Ready-to-Use Prompt｜完整提示词
+
+```text
+请设计并实现一个原创的中文个人设计作品集首页，整体概念为“可玩的个人案头 × 沉浸式作品放映框”。灵感来自生活化、可触碰的个人主页和全屏媒体型项目框架，但不要复制任何参考网站的具体素材、文案、人物形象或品牌元素。
+
+页面包含五个部分：首屏、个人简介、精选作品、专业能力优势、全屏页脚联系方式与收尾。
+
+1. 首屏使用 100svh 暖纸白 #FFFAF5 背景。中央放两行简洁中文价值主张“把复杂问题，做成自然好用的体验。”，搭配英文姓名的手写签名。周围散落 6–10 个真实设计过程物件，如草图、原型截片、便签、音乐播放条和系统分享小窗口。核心文字保持稳定；边缘物件随指针产生 2–10px 轻微视差。仅 1–2 个物件可拖拽，一段媒体可点击播放，声音默认关闭。左下显示“产品设计 / 体验策略 / 视觉系统”，右下显示滚动提示。主 CTA 为“查看精选作品 ↓”。
+
+2. 个人简介保持暖色场景，使用 12 栏网格和 32–48px 的编辑式大段中文自述，句中嵌入小头像、工具图标和项目过程片段。文字随滚动逐词从半透明变为实色，但不要滚动劫持。补充工作年限、合作范围和当前关注方向三个可信信号。
+
+3. 精选作品切换到 #0A0A0A 深色舞台。展示 3 个精选项目，每个项目放在距桌面视口四边 30px、移动端 15px 的 #FAFAFA 大画框中，圆角 16px。画框顶部是全宽视频或高质量动图，向下是项目标题、价值说明、职责、年份、一个成果数字，以及左右错位的过程媒体。桌面项目标题 56px，移动端 40px。项目末尾使用一屏 sticky“下一项目”转场：深色背景、居中封面、薄荷绿 #21FFC0 的轻微旋转滚动标签，继续滚动时下一项目封面放大接管页面。
+
+4. 专业能力优势回到 #FFFAF5。标题为“我如何把项目推向完成”，用三张轻微错位但仍对齐网格的工作方法便签展示：研究与问题定义、交互原型与体验验证、视觉系统与开发协作。每张包含一句方法、可验证项目证据和工具。桌面 hover 展开证据图，移动端使用手风琴。不要使用普通 SaaS 四宫格卡片或 3D 翻转。
+
+5. 收尾为 100svh #0A0A0A 全屏联系区。使用巨大中文邀请“有一个值得认真做的想法？我们聊聊。”，展示可复制邮箱、社交链接、城市、可合作状态、年份和回到顶部。加入一个可轻微旋转或拖动的英文签名贴纸，但不能遮挡联系信息。
+
+视觉规范：主文字 #3E3E42，暗场文字 #FAFAFA，唯一高饱和强调色 #21FFC0，暖色边界 #E8E0D8。中文字体使用 PingFang SC / Noto Sans SC / HarmonyOS Sans SC，正文 17–19px、行高 1.65–1.8，每行约 22–32 个汉字；中文不使用花体和夸张字距。西文元数据使用 IBM Plex Mono。圆角采用 8/12/16/20px 与胶囊 999px。阴影只用于浮动便签，项目层级主要依靠色差与遮挡。
+
+交互规范：动效要轻快、有弹性而不浮夸，普通反馈 180–280ms，卡片与菜单 450–900ms，使用 ease-out 或轻微 spring；不要在每个模块都加入跟随光标。支持键盘导航、可见焦点、prefers-reduced-motion；按钮至少 44×44px。移动端隐藏纯装饰物件，拖拽改成点击或横滑，hover 改成点击展开，不允许横向页面溢出。声音默认关闭，不自动播放。目标是让访问者先记住一个有判断力的人，再清楚理解他的项目能力。
+```
+
+### Iteration Guide
+
+1. 先完成排版、网格和场景明暗切换，再加入物件与动效。
+2. 首屏互动只保留 3 种：轻视差、有限拖拽、播放/翻面；若影响主标题阅读就减少物件。
+3. 项目区首先保证封面质量、标题和成果信息，再调 sticky 接力。
+4. 每增加一种动效，都要检查移动端替代方案、键盘状态和 reduced-motion。
+5. 最后用真实项目素材替换占位图；真实素材不足时宁可留白，不用通用图库填满页面。
+
+## Optional Appendix: Interaction Patterns｜交互模式
+
+- **首屏指针**：边缘物件根据指针相对视口中心偏移 `2–10px`；使用 requestAnimationFrame 和缓动，不直接绑定高频 DOM 写入。
+- **拖拽**：桌面最多 2 个元素；cursor 使用 `grab/grabbing`；释放后保留位置或轻微吸附到安全区。
+- **项目 hover**：预览图缩放 `1 → 1.02`，遮罩淡入，标签弹出；时长 `220–320ms`。
+- **菜单**：胶囊从 48px 高展开为大面板，`600–900ms` 轻微 spring；关闭按钮始终可见。
+- **滚动揭示**：标题/媒体用 `opacity + translateY(12–24px)`，避免大距离飞入。
+- **sticky 接力**：下一项目区域固定 `100svh`；封面随滚动从约 `0.8` 放大到 `1`，不要改变页面滚动速度。
+- **声音**：任何声音必须由用户主动开启；按钮状态文字/图标必须同步。
+- **Reduced motion**：移除视差、旋转、跟随光标和缩放接力，保留不超过 `150ms` 的淡入淡出。
+
+## Optional Appendix: Content &amp; Messaging Patterns｜内容与语气
+
+- 标题短、具体、有动作：“把复杂问题做清楚”“让关键一步更自然”。
+- 项目摘要结构：为谁 / 解决什么 / 产生什么结果，不用“这是一个很酷的项目”。
+- CTA 使用中文动词：“查看案例”“播放原型”“了解过程”“复制邮箱”。
+- 语气专业但不端着，可保留一句生活化状态，例如“最近在研究小而真实的 AI 体验”。
+- 每个精选项目至少给一个可信证据：转化、效率、留存、满意度、交付范围或验证结论。
+
+## Optional Appendix: Observed Pages｜观察证据与推导边界
+
+- `https://jackiehu.design/`：实时桌面页观察到 `#FFFAF5` 暖白背景、85px 英文手写姓名、20px IBM Plex Mono 模块标题、16px 圆角项目条目、散落图片、grab 指针物件、多个可点击媒体控件；移动端页面延长为约 4937px，英文姓名降到 72px，项目媒体纵向排列。首屏物件对单次指针移动未观察到图片本身 transform 变化，因此本规范中的轻视差是为你的首页做的设计推导，不是对原站行为的断言。
+- `https://pacomepertant.com/projects/digital-travel`：直接服务器请求会返回 404，但通过站内 Digital Travel 缩略图的 SPA 点击事件可正常进入。实时桌面页观察到 `#0A0A0A` 背景、`#FAFAFA` 内框、`#21FFC0` 强调色、30px 外边距、16px 大框圆角、56px 项目标题、18px 正文、12 栏/16px gutter、全屏媒体、固定菜单和 sticky 下一项目；移动端观察到 15px 外边距、360px 内框、40px 项目标题、单列媒体和 100svh 下一项目区。
+- `https://pacomepertant.com/about/`：用于通过当前站点作品缩略图进入 Digital Travel，并观察到横向项目缩略图、hover overlay 与连续作品列表结构。
+- Digital Travel 的作品内容还可由其 Behance/Vimeo 页面作为内容存在性的辅助证据，但本规范的布局数值以 `agent-browser` 的实时 DOM 与计算样式为主。
+</pre>
+              <article class="rendered-view" id="previewView" hidden><section><h2>1. Visual Theme &amp; Atmosphere｜视觉主题与氛围</h2><p>整体体验应像打开一位设计师正在使用的工作桌：首屏轻松、私密、有生活痕迹；向下浏览后逐渐进入更克制的作品展映空间。首页负责“建立人格”，项目区负责“建立专业可信度”，页脚再回到直接、友好的个人邀请。</p><ul><li><strong>整体感受</strong>：温暖、聪明、有趣，但不幼稚；实验感来自交互和构图，不依赖花哨装饰。</li><li><strong>视觉密度</strong>：首屏高密度、正文中密度、项目详情低密度、页脚重新放大。</li><li><strong>品牌姿态</strong>：像一位愿意展示过程和个性的设计师，而不是一间无名的模板工作室。</li><li><strong>核心母题</strong>：散落物件、便签/系统小窗口、等宽注释、内嵌放映框、滚动接力、旋转贴纸。</li><li><strong>场景节奏</strong>：暖纸色个人空间 → 白色项目阅读面板 → 深色放映与下一项目舞台 → 全屏联系收尾。</li></ul><h3>Key Characteristics｜关键特征</h3><ul><li>暖白纸张底色与深墨色文字，避免纯白页面的冷感。</li><li>中文主信息保持高可读性；手写字体只用于英文姓名、签名或极短的情绪性词语。</li><li>首屏使用可拖拽卡片、轻微指针视差和可选声音控制，制造“这是活的”第一印象。</li><li>项目内容放进离视口边缘 30px 的大圆角画框，媒体是主角，UI 尽量退后。</li><li>章节之间不是普通分割线，而是通过背景明暗、sticky 接力和尺度变化完成转场。</li></ul></section><section><h2>2. Color Palette &amp; Roles｜色彩与角色</h2><table><thead><tr><th>角色</th><th>语义名称</th><th>色值</th><th>用法</th></tr></thead><tbody><tr><td>主背景</td><td>暖纸白</td><td><code>#FFFAF5</code></td><td>首屏、简介、能力模块的大面积背景</td></tr><tr><td>项目表面</td><td>展签白</td><td><code>#FAFAFA</code></td><td>项目画框、内容面板、菜单展开层</td></tr><tr><td>暗场背景</td><td>深墨黑</td><td><code>#0A0A0A</code></td><td>项目转场、全屏联系区、媒体舞台</td></tr><tr><td>主文字</td><td>石墨</td><td><code>#3E3E42</code></td><td>暖色页面的标题与正文</td></tr><tr><td>次级文字</td><td>灰褐</td><td><code>#69645E</code></td><td>项目说明、次要信息</td></tr><tr><td>弱文字</td><td>铅灰</td><td><code>#8F8D8C</code></td><td>元数据、社交链接、年份</td></tr><tr><td>交互强调</td><td>数字薄荷</td><td><code>#21FFC0</code></td><td>滚动提示、播放状态、焦点环、少量贴纸</td></tr><tr><td>暗场文字</td><td>柔白</td><td><code>#FAFAFA</code></td><td>深色区域的标题、正文与链接</td></tr><tr><td>暖色边界</td><td>纸边</td><td><code>#E8E0D8</code></td><td>浅色卡片边缘，低对比 1px</td></tr><tr><td>暗色边界</td><td>夜间描边</td><td><code>rgba(250,250,250,.16)</code></td><td>深色区域的分隔与控件边界</td></tr></tbody></table><h3>Primary</h3><ul><li><code>#FFFAF5</code> 是人格层的主色，承接 Jackie Hu 页面观察到的暖白背景。</li><li><code>#0A0A0A</code> 与 <code>#FAFAFA</code> 是项目展映层的黑白基座，承接 Digital Travel 的暗场/白色内框结构。</li></ul><h3>Interactive</h3><ul><li>唯一高饱和强调色使用 <code>#21FFC0</code>；只出现在当前可操作点，不作为大面积装饰。</li><li>链接默认继承文字色，hover 时下划线从左向右生长或文字横移 <code>8–12px</code>。</li><li>键盘焦点使用 <code>2px #21FFC0</code> 外环，外偏移 <code>3px</code>，不能只靠颜色表达状态。</li></ul><h3>Neutral Scale</h3><ul><li>强信息：<code>#3E3E42</code> / 暗场 <code>#FAFAFA</code>。</li><li>正文：<code>#69645E</code> / 暗场 <code>rgba(250,250,250,.78)</code>。</li><li>元数据：<code>#8F8D8C</code> / 暗场 <code>rgba(250,250,250,.55)</code>。</li><li>边界：<code>#E8E0D8</code> / 暗场 <code>rgba(250,250,250,.16)</code>。</li></ul><h3>Surface &amp; Overlay</h3><ul><li>暖色卡片：<code>#FCF7F2</code> 或 <code>#FDF8F4</code>，与背景只产生轻微色差。</li><li>媒体画框：<code>#FAFAFA</code>，桌面距视口四边 <code>30px</code>，移动端 <code>15px</code>。</li><li>菜单展开层：浅色实底，不使用重玻璃拟态；深色场景中展开为白色大圆角面板。</li><li>媒体 hover 遮罩：<code>rgba(10,10,10,.45)</code>，文字使用柔白。</li></ul><h3>Theme Modes｜主题场景</h3><p>这不是传统的全站亮/暗主题切换，而是由内容驱动的场景切换。</p><p>#### Light Mode｜人格与说明场景</p><ul><li>背景：<code>#FFFAF5</code></li><li>表面：<code>#FCF7F2</code>、<code>#FAFAFA</code></li><li>文字：<code>#3E3E42</code></li><li>强调：<code>#21FFC0</code></li><li>用于：首屏、个人简介、专业能力、项目文字面板。</li></ul><p>#### Dark Mode｜展映与联系场景</p><ul><li>背景：<code>#0A0A0A</code></li><li>表面：深墨背景上的 <code>#FAFAFA</code> 媒体框或无边媒体。</li><li>文字：<code>#FAFAFA</code></li><li>强调：<code>#21FFC0</code></li><li>用于：项目之间的 sticky 过渡、下一项目预告、全屏联系方式。</li></ul><h3>Shadows &amp; Depth</h3><ul><li>大部分层级依靠色差、遮挡和尺度，不依靠阴影。</li><li>浮动便签可用 <code>0 8px 30px rgba(62,50,42,.10)</code>。</li><li>媒体缩略图可用 <code>0 4px 8px rgba(0,0,0,.20)</code>，尤其用于轻微旋转的展示卡。</li><li>浅色项目条目优先用 <code>1px solid #E8E0D8</code> 或极轻内描边，避免电商式卡片阴影。</li></ul></section><section><h2>3. Typography Rules｜中文排版规范</h2><h3>Font Family</h3><ul><li><strong>中文主字体</strong>：<code>PingFang SC</code>, <code>Noto Sans SC</code>, <code>HarmonyOS Sans SC</code>, <code>Microsoft YaHei</code>, sans-serif。</li><li><strong>西文与数字主字体</strong>：<code>Inter</code>, <code>Helvetica Neue</code>, Arial, sans-serif；如有授权可使用 Indivisible Variable 类似的中性 grotesk。</li><li><strong>等宽标签</strong>：<code>IBM Plex Mono</code>, <code>Noto Sans Mono</code>, monospace。</li><li><strong>个性手写</strong>：仅限英文姓名/签名，可选 Historia Sky Script、Felt Tip 类字体或自制 SVG 签名；不得用于中文长句。</li><li><strong>OpenType</strong>：数字表格可启用 <code>tabular-nums</code>；中文标点使用系统默认比例，不人为拉大字距。</li></ul><h3>Hierarchy</h3><table><thead><tr><th>角色</th><th>字体</th><th>桌面尺寸</th><th>移动尺寸</th><th>字重</th><th>行高</th><th>字距</th><th>说明</th></tr></thead><tbody><tr><td>首屏中文主张</td><td>中文无衬线</td><td><code>clamp(64px, 7vw, 112px)</code></td><td><code>42–56px</code></td><td>500</td><td><code>1.02–1.08</code></td><td><code>-0.02em</code>（仅西文）；中文 <code>0</code></td><td>最多两行，每行建议 8–14 个汉字</td></tr><tr><td>英文签名</td><td>手写/展示体</td><td><code>80–120px</code></td><td><code>64–72px</code></td><td>400</td><td><code>1.0–1.2</code></td><td><code>0</code></td><td>作为人格图形，不承担关键信息</td></tr><tr><td>项目标题</td><td>中文无衬线</td><td><code>56px</code></td><td><code>40px</code></td><td>500</td><td><code>1.0</code></td><td>中文 <code>0</code></td><td>与 Digital Travel 观察值一致地保持紧凑</td></tr><tr><td>章节标题</td><td>中文无衬线</td><td><code>36–48px</code></td><td><code>30–36px</code></td><td>500</td><td><code>1.15</code></td><td><code>0</code></td><td>简短、直白</td></tr><tr><td>大段自我介绍</td><td>中文无衬线</td><td><code>32–48px</code></td><td><code>24–30px</code></td><td>400/500</td><td><code>1.35–1.5</code></td><td><code>0</code></td><td>可在句中插入小图或关键词标签</td></tr><tr><td>正文</td><td>中文无衬线</td><td><code>17–19px</code></td><td><code>16–18px</code></td><td>400</td><td><code>1.65–1.8</code></td><td><code>0</code></td><td>每行约 22–32 个汉字</td></tr><tr><td>导航/按钮</td><td>中文无衬线</td><td><code>16–18px</code></td><td><code>16–18px</code></td><td>500</td><td><code>1.0–1.2</code></td><td><code>0</code></td><td>点击区不小于 44px</td></tr><tr><td>模块标签</td><td>等宽字体</td><td><code>14–16px</code></td><td><code>13–14px</code></td><td>500</td><td><code>1.4</code></td><td>西文 <code>0</code>；中文 <code>0.02em</code> 最大</td><td>用于序号、年份、职责、工具</td></tr><tr><td>页脚巨型文字</td><td>中文无衬线</td><td><code>clamp(72px, 11vw, 168px)</code></td><td><code>52–72px</code></td><td>500</td><td><code>.92–1.0</code></td><td><code>-0.03em</code>（西文）</td><td>“一起做点有意思的事”或“联系我”</td></tr></tbody></table><h3>Principles</h3><ul><li>中文正文不套用西文常见的负字距；小字号中文避免全大写式的机械分散排版。</li><li>一行不超过 32 个汉字，项目说明控制在 3–5 行；复杂信息用元数据列拆开。</li><li>中文与英文/数字之间保留自然空格，例如“完成 3 个核心流程”，不要把中英文挤在一起。</li><li>标题可以紧，正文必须松；标题与正文的层级主要靠尺度而非多种字重。</li><li>避免花体中文。个性通过构图、贴纸、动效和用词体现。</li></ul></section><section><h2>4. Component Stylings｜组件风格</h2><h3>Buttons and Links</h3><ul><li><strong>主按钮</strong>：深墨底/柔白字或薄荷底/深墨字，高 <code>46–48px</code>，左右内边距 <code>20–24px</code>，圆角 <code>999px</code>。</li><li><strong>次按钮</strong>：透明底、1px 低对比描边；hover 时背景轻微填充。</li><li><strong>文本链接</strong>：不默认使用蓝色。hover 时文字横移 <code>8px</code> 并出现箭头 <code>↗</code> 或下划线。</li><li><strong>播放按钮</strong>：鼠标进入媒体时出现薄荷色圆角标签“播放 / PLAY”，跟随指针但限制在媒体边界内；触屏端固定在右下角。</li><li><strong>声音控制</strong>：48px 圆形固定按钮，默认静音，不自动播放声音，并明确显示状态。</li></ul><h3>Cards and Containers</h3><ul><li><strong>项目列表条目</strong>：暖白表面，高 <code>112–128px</code>，圆角 <code>16px</code>；左侧项目名，右侧年份/职责；hover 时预览图从边缘或指针附近展开。</li><li><strong>项目大画框</strong>：桌面 <code>calc(100vw - 60px)</code>，移动端 <code>calc(100vw - 30px)</code>；圆角 <code>16px</code>，overflow hidden。</li><li><strong>能力卡</strong>：不要做成普通四宫格 SaaS 卡片。使用 3 个可轻微错位的“工作方法便签”，宽度不完全一致，信息仍对齐到 12 栏网格。</li><li><strong>系统小窗口</strong>：用于首屏的“正在做 / 可合作 / 当前城市”，圆角 <code>12–16px</code>，可拖拽，带极简窗口标题条。</li></ul><h3>Inputs and Interactive Controls</h3><ul><li>联系方式以 mailto、复制邮箱、社交链接为主，不强制加入表单。</li><li>如使用表单：仅姓名、邮箱、项目描述三项；底部细线输入或暖白实体输入，focus 使用薄荷色 2px 环。</li><li>所有 draggable 元素必须有键盘替代方式；拖拽不是获取信息的唯一途径。</li></ul><h3>Navigation</h3><ul><li>桌面默认只显示左上角个人标记与右上角胶囊“菜单”。</li><li>菜单按钮高 <code>48px</code>、圆角 <code>24px</code>；展开为大圆角浅色面板，链接使用 <code>56–80px</code> 大字号。</li><li>页面滚动时导航保持固定，但避免大面积毛玻璃顶栏。</li><li>导航项：作品 / 关于 / 能力 / 联系；当前位置可用小圆点或薄荷色短线标记。</li></ul><h3>Image Treatment</h3><ul><li>首屏物件允许透明 PNG、手绘草图、票据、头像、界面截片混排，边缘可超出视口。</li><li>项目媒体保持原始比例，主封面优先 <code>16:9</code>；案例过程图可左右错位形成阅读节奏。</li><li>图片圆角遵循 <code>8 / 12 / 16 / 20px</code>，不要每张图都套阴影。</li><li>避免通用图库图片；优先真实设计稿、过程草图、原型动图和结果数据。</li></ul><h3>Distinctive Components｜标志性组件</h3><ol><li><strong>可玩的个人案头 Hero</strong>：中央主张与签名稳定，周围 6–10 个物件轻微视差；其中 1–2 个可拖拽，2 个可点击播放/翻面。</li><li><strong>行内人格片段</strong>：大段个人介绍中嵌入小头像、工具图标、手写关键词或城市时间，不做传统左图右文。</li><li><strong>沉浸式项目画框</strong>：媒体封面占据画框首屏，向下才出现标题、职责、问题、方法和成果。</li><li><strong>下一项目 Sticky 接力</strong>：当前项目结束后深色舞台固定一屏，继续滚动时下一项目封面从中央放大接管屏幕。</li><li><strong>全屏联系终章</strong>：巨大中文邀请、邮箱、社交链接与一个可旋转/拖动的签名贴纸。</li></ol></section><section><h2>5. Layout Principles｜布局原则与模块分配</h2><h3>首页信息架构</h3><table><thead><tr><th>模块</th><th>建议高度</th><th>视觉呈现</th><th>交互职责</th></tr></thead><tbody><tr><td>01 首屏</td><td><code>100svh</code>，最少 <code>760px</code></td><td>暖纸白背景；中央中文主张 + 英文签名；周围散落真实设计物件；左下状态、右下滚动提示</td><td>指针轻视差、可拖拽便签、媒体播放/静音、点击物件显示一句故事</td></tr><tr><td>02 个人简介</td><td><code>90–130vh</code></td><td>12 栏中放置 2–3 行超大中文自述，句中插入小图、地点、关键词；下方一行短履历</td><td>文字随滚动逐词从 50% 灰度变为实色；行内图片轻微弹出</td></tr><tr><td>03 精选作品</td><td>每个项目 <code>140–220vh</code></td><td>进入深色舞台；每个项目是距边缘 30px 的白色大圆角画框；封面媒体 → 标题与摘要 → 过程媒体 → 成果</td><td>hover 出现“查看案例”；滚动驱动媒体/文字揭示；项目末尾 sticky 进入下一项目</td></tr><tr><td>04 专业能力优势</td><td><code>100–140vh</code></td><td>回到暖纸白；三张错位方法便签：洞察与策略 / 体验与视觉 / 原型与交付；配一条端到端流程</td><td>桌面 hover 展开案例证据，点击固定；移动端改为手风琴，不依赖 hover</td></tr><tr><td>05 全屏页脚联系方式与收尾</td><td><code>100svh</code></td><td>深墨黑；巨大“聊聊你的项目”或“一起做点有意思的事”；邮箱和社交链接；右下年份与城市</td><td>复制邮箱反馈、链接文字滑动、签名贴纸轻微旋转；滚到底后动效停止</td></tr></tbody></table><h3>各模块的具体内容建议</h3><p>#### 01 首屏</p><ul><li>主标题示例：“把复杂问题，做成自然好用的体验。”</li><li>辅助说明：“产品设计 / 体验策略 / 视觉系统，现居上海，可远程合作。”</li><li>人格物件建议：最近项目原型、草图纸、音乐播放条、相机/票据、当前书籍、一个系统分享弹窗。</li><li>首屏只设一个明确 CTA：“查看精选作品 ↓”；其他物件是探索性入口。</li><li>中央文字不可随指针大幅移动；视差只作用在边缘物件，位移 <code>2–10px</code>。</li></ul><p>#### 02 个人简介</p><ul><li>不用证件照 + 简历段落模板。</li><li>采用编辑式大句：“我关注产品里那些容易被忽略的小瞬间，并用研究、原型与视觉把它们变得清楚、顺手、令人愉快。”</li><li>在“研究 / 原型 / 视觉”之间嵌入三个小图标或真实过程片段。</li><li>补充 3 个可信信号：年限、合作行业/客户、当前关注方向；不要堆公司 logo 墙。</li></ul><p>#### 03 精选作品</p><ul><li>首页精选 3 个项目最合适，最多 4 个。</li><li>每个项目首页摘要只保留：项目名、1 句价值、职责、年份、1 个成果数字。</li><li>项目 1 用全屏视频或高质量动图做强开场；项目 2 用静态界面与过程叙事；项目 3 展示系统性或品牌能力。</li><li>项目画框内部使用左右错位的 6 栏媒体：左、右、左，形成 Digital Travel 式连续观影节奏。</li><li>下一项目预告使用深色 sticky 一屏，封面居中，标签轻微旋转，但不要每个项目都重复所有花样。</li></ul><p>#### 04 专业能力优势</p><ul><li>模块标题：“我如何把项目推向完成”。</li><li>三项优势结构统一为：能力名称 / 一句话方法 / 可验证的项目证据 / 相关工具。</li><li>推荐内容：① 研究与问题定义；② 交互原型与体验验证；③ 视觉系统与开发协作。</li><li>卡片 hover 展开证据图，卡片本身只移动 <code>4–8px</code>，不用 3D 翻转。</li></ul><p>#### 05 全屏联系方式与收尾</p><ul><li>主要文案：“有一个值得认真做的想法？我们聊聊。”</li><li>主 CTA 是可复制邮箱，文字可用 <code>clamp(36px, 6vw, 88px)</code>。</li><li>次级信息：微信/邮箱、LinkedIn/即刻/小红书等真实渠道、所在地、可合作状态。</li><li>最后一行保持克制：“设计与构建于 2026 / 上海”，并提供回到顶部。</li></ul><h3>Spacing System</h3><ul><li>基础单位：<code>4px</code>。</li><li>常用间距：<code>8 / 12 / 16 / 24 / 30 / 40 / 60 / 90 / 120 / 180px</code>。</li><li>项目系统参考：桌面外边距 <code>30px</code>、栏间距 <code>16px</code>；移动端外边距 <code>15px</code>。</li></ul><h3>Grid &amp; Container</h3><ul><li>桌面：12 栏网格，左右边距 <code>30px</code>，gutter <code>16px</code>，内容最大宽度 <code>1600px</code>。</li><li>平板：8 栏，左右边距 <code>24px</code>，gutter <code>16px</code>。</li><li>移动：4 栏，左右边距 <code>15–20px</code>，gutter <code>12px</code>。</li><li>中文正文列宽桌面不超过 <code>640px</code>；项目说明可占 5–6 栏，媒体占 6–10 栏。</li></ul><h3>Whitespace Philosophy</h3><ul><li>首屏通过物件制造密度，但核心文字周围保留至少 <code>120px</code> 安全区。</li><li>项目区让媒体占据大面积，文字块保持窄而清晰。</li><li>能力区使用错位而非无序；所有卡片的文字基线仍落在网格上。</li><li>每个强互动之后安排一段安静阅读区，避免全程都在“表演”。</li></ul><h3>Border Radius Scale</h3><ul><li>微型：<code>4px</code>，仅小标签/焦点细节。</li><li>标准：<code>8px</code>，过程图与小卡片。</li><li>中型：<code>12px</code>，缩略图、便签、表单。</li><li>大型：<code>16–20px</code>，项目画框、菜单与主卡片。</li><li>胶囊：<code>999px</code>，按钮、状态标签、滚动提示。</li></ul></section><section><h2>6. Depth &amp; Elevation｜层级与深度</h2><table><thead><tr><th>级别</th><th>处理</th><th>用途</th></tr></thead><tbody><tr><td>Flat</td><td>纯色背景，无阴影</td><td>正文、项目说明、暗场</td></tr><tr><td>Ring</td><td>1px 低对比描边</td><td>能力便签、次级按钮</td></tr><tr><td>Card</td><td>轻色差 + <code>0 8px 30px rgba(62,50,42,.10)</code></td><td>可拖拽窗口、浮动便签</td></tr><tr><td>Focus</td><td><code>0 0 0 2px #21FFC0</code> + 3px offset</td><td>键盘焦点、当前交互</td></tr><tr><td>Stage</td><td>黑色满屏背景 + 白色内框遮挡</td><td>精选项目和下一项目转场</td></tr></tbody></table><h3>Depth Principles</h3><ul><li>“纸上物件”允许浅阴影，“数字画框”主要依靠黑白反差。</li><li>旋转角度控制在 <code>-6°–6°</code>；正文与关键按钮保持水平。</li><li>不使用大面积背景模糊。菜单和媒体遮罩应保持清楚、实在。</li><li>动态遮挡比静态阴影更重要：卡片被拖到上层、下一项目封面盖过旧项目。</li></ul></section><section><h2>7. Do&#39;s and Don&#39;ts｜执行边界</h2><h3>Do</h3><ul><li>用真实过程物件和项目素材建立个性，而不是下载通用 3D 装饰。</li><li>让一个模块只承担一种主要交互：首屏探索、项目区滚动、能力区展开、页脚联系。</li><li>保持中文正文清楚、行长适中、标点自然。</li><li>在桌面提供 hover 和拖拽，在移动端提供点击/手风琴等明确替代方案。</li><li>支持 <code>prefers-reduced-motion</code>，把复杂位移动画降级为淡入与直接切换。</li></ul><h3>Don&#39;t</h3><ul><li>不要把两个参考网站的 logo、文案、人物物件或项目素材直接复制到新站。</li><li>不要在每一屏都放跟随光标、磁吸按钮和滚动劫持。</li><li>不要用花体显示中文标题或正文；不要为了“高级”把正文压到 12px。</li><li>不要让装饰盖住主 CTA，或让用户必须拖拽才能看到关键信息。</li><li>不要自动播放有声媒体；不要移除原生滚动条或制造过强惯性滚动。</li><li>不要在手机端保留超出屏幕、无法触达的桌面散落物件。</li></ul></section><section><h2>8. Responsive Behavior｜响应式规范</h2><h3>Breakpoints</h3><table><thead><tr><th>名称</th><th>宽度</th><th>关键变化</th></tr></thead><tbody><tr><td>Mobile</td><td><code>&lt; 768px</code></td><td>4 栏；外边距 15px；项目标题 40px；首屏物件减到 4–6 个；拖拽改为点击/横滑；项目媒体单列</td></tr><tr><td>Tablet</td><td><code>768–1199px</code></td><td>8 栏；外边距 24px；减少超出视口的装饰；项目文字与媒体保持 5/7 或 4/4 分栏</td></tr><tr><td>Desktop</td><td><code>≥ 1200px</code></td><td>12 栏；外边距 30px；启用指针视差、hover 预览、有限拖拽和 sticky 项目接力</td></tr><tr><td>Wide</td><td><code>≥ 1600px</code></td><td>限制正文与主框最大宽度；物件向两侧扩展，不无限放大字号</td></tr></tbody></table><h3>Touch Targets</h3><ul><li>所有按钮/图标点击区至少 <code>44×44px</code>，推荐 <code>48×48px</code>。</li><li>移动端链接之间最少垂直间距 <code>12px</code>。</li><li>触屏不显示跟随指针标签；改为固定标签或首击展开、再击进入。</li></ul><h3>Collapsing Strategy</h3><ul><li><strong>首屏</strong>：桌面散落物件围绕中央文字；移动端改成纵向构图，关键物件进入安全区，纯装饰物件隐藏。</li><li><strong>个人简介</strong>：桌面 2–3 行超大叙述；移动端变为 4–6 行，行内图片缩小到 28–44px。</li><li><strong>精选作品</strong>：桌面画框内左右错位；移动端所有媒体单列居中，宽约 <code>248–330px</code>，保留 15px 外框。</li><li><strong>能力优势</strong>：桌面错位便签；移动端按顺序堆叠为手风琴。</li><li><strong>页脚</strong>：桌面巨型横向邀请；移动端拆为两到三行，邮箱允许换行或显示复制按钮。</li><li><strong>菜单</strong>：桌面从右上胶囊展开；移动端展开为四周留 15px 的近全屏圆角面板。</li></ul></section><section><h2>9. Agent Prompt Guide｜可直接使用的生成提示词</h2><h3>Quick Color Reference</h3><ul><li>主 CTA：<code>#0A0A0A</code> 底 / <code>#FAFAFA</code> 字，或 <code>#21FFC0</code> 底 / <code>#0A0A0A</code> 字。</li><li>首页背景：<code>#FFFAF5</code>。</li><li>项目表面：<code>#FAFAFA</code>。</li><li>深色舞台：<code>#0A0A0A</code>。</li><li>主文字：<code>#3E3E42</code>。</li><li>边界：<code>#E8E0D8</code>。</li><li>强调：<code>#21FFC0</code>。</li></ul><h3>Quick Summary</h3><p>这是一个面向中文阅读的互动设计师作品集。首屏像真实工作桌，暖纸色、手写签名、等宽注释和可拖拽物件共同建立人格；项目区转入深色展映场景，用 30px 内缩、16px 圆角的白色大画框承载全屏媒体和紧凑项目叙事。动效轻快、有弹性，但只服务于发现、播放、展开和项目接力。中文采用高可读无衬线，正文 17–19px、1.65 以上行高，不用花体。页面最终在全屏深色联系方式中收束。</p><h3>Example Component Prompts</h3><ul><li><strong>Hero</strong>：创建一个 100svh 的暖纸色互动首屏，中央是两行中文价值主张和英文手写签名，周围布置 6–10 个来自真实设计过程的透明物件；物件有 2–10px 指针视差，其中一张便签可拖拽，一段媒体可播放，核心文字始终稳定清晰。</li><li><strong>项目卡</strong>：创建高 120px、圆角 16px 的暖白项目条目，左侧项目名与一句价值，右侧年份与职责；hover 时标题横移 8px，并在指针附近展开 16:9 预览图；移动端点击展开预览。</li><li><strong>项目画框</strong>：在 <code>#0A0A0A</code> 背景中放置距视口 30px、圆角 16px、<code>#FAFAFA</code> 的沉浸式画框，顶部是可播放的 16:9 媒体，向下依次出现 56px 项目标题、窄列说明、错位过程图片和成果标签。</li><li><strong>导航</strong>：右上角 48px 高胶囊菜单固定在视口；点击后展开为白色大圆角面板，使用 64–80px 的作品/关于/能力/联系链接，带轻微弹簧过渡和清晰键盘焦点。</li><li><strong>页脚</strong>：创建 100svh 深墨黑联系区，用 72–168px 的中文邀请作为视觉中心，下面是可复制邮箱、社交链接、所在城市和可合作状态，加入一个轻微旋转的签名贴纸与回到顶部链接。</li></ul><h3>Ready-to-Use Prompt｜完整提示词</h3><p>```text 请设计并实现一个原创的中文个人设计作品集首页，整体概念为“可玩的个人案头 × 沉浸式作品放映框”。灵感来自生活化、可触碰的个人主页和全屏媒体型项目框架，但不要复制任何参考网站的具体素材、文案、人物形象或品牌元素。</p><p>页面包含五个部分：首屏、个人简介、精选作品、专业能力优势、全屏页脚联系方式与收尾。</p><ol><li>首屏使用 100svh 暖纸白 #FFFAF5 背景。中央放两行简洁中文价值主张“把复杂问题，做成自然好用的体验。”，搭配英文姓名的手写签名。周围散落 6–10 个真实设计过程物件，如草图、原型截片、便签、音乐播放条和系统分享小窗口。核心文字保持稳定；边缘物件随指针产生 2–10px 轻微视差。仅 1–2 个物件可拖拽，一段媒体可点击播放，声音默认关闭。左下显示“产品设计 / 体验策略 / 视觉系统”，右下显示滚动提示。主 CTA 为“查看精选作品 ↓”。</li></ol><ol><li>个人简介保持暖色场景，使用 12 栏网格和 32–48px 的编辑式大段中文自述，句中嵌入小头像、工具图标和项目过程片段。文字随滚动逐词从半透明变为实色，但不要滚动劫持。补充工作年限、合作范围和当前关注方向三个可信信号。</li></ol><ol><li>精选作品切换到 #0A0A0A 深色舞台。展示 3 个精选项目，每个项目放在距桌面视口四边 30px、移动端 15px 的 #FAFAFA 大画框中，圆角 16px。画框顶部是全宽视频或高质量动图，向下是项目标题、价值说明、职责、年份、一个成果数字，以及左右错位的过程媒体。桌面项目标题 56px，移动端 40px。项目末尾使用一屏 sticky“下一项目”转场：深色背景、居中封面、薄荷绿 #21FFC0 的轻微旋转滚动标签，继续滚动时下一项目封面放大接管页面。</li></ol><ol><li>专业能力优势回到 #FFFAF5。标题为“我如何把项目推向完成”，用三张轻微错位但仍对齐网格的工作方法便签展示：研究与问题定义、交互原型与体验验证、视觉系统与开发协作。每张包含一句方法、可验证项目证据和工具。桌面 hover 展开证据图，移动端使用手风琴。不要使用普通 SaaS 四宫格卡片或 3D 翻转。</li></ol><ol><li>收尾为 100svh #0A0A0A 全屏联系区。使用巨大中文邀请“有一个值得认真做的想法？我们聊聊。”，展示可复制邮箱、社交链接、城市、可合作状态、年份和回到顶部。加入一个可轻微旋转或拖动的英文签名贴纸，但不能遮挡联系信息。</li></ol><p>视觉规范：主文字 #3E3E42，暗场文字 #FAFAFA，唯一高饱和强调色 #21FFC0，暖色边界 #E8E0D8。中文字体使用 PingFang SC / Noto Sans SC / HarmonyOS Sans SC，正文 17–19px、行高 1.65–1.8，每行约 22–32 个汉字；中文不使用花体和夸张字距。西文元数据使用 IBM Plex Mono。圆角采用 8/12/16/20px 与胶囊 999px。阴影只用于浮动便签，项目层级主要依靠色差与遮挡。</p><p>交互规范：动效要轻快、有弹性而不浮夸，普通反馈 180–280ms，卡片与菜单 450–900ms，使用 ease-out 或轻微 spring；不要在每个模块都加入跟随光标。支持键盘导航、可见焦点、prefers-reduced-motion；按钮至少 44×44px。移动端隐藏纯装饰物件，拖拽改成点击或横滑，hover 改成点击展开，不允许横向页面溢出。声音默认关闭，不自动播放。目标是让访问者先记住一个有判断力的人，再清楚理解他的项目能力。 ```</p><h3>Iteration Guide</h3><ol><li>先完成排版、网格和场景明暗切换，再加入物件与动效。</li><li>首屏互动只保留 3 种：轻视差、有限拖拽、播放/翻面；若影响主标题阅读就减少物件。</li><li>项目区首先保证封面质量、标题和成果信息，再调 sticky 接力。</li><li>每增加一种动效，都要检查移动端替代方案、键盘状态和 reduced-motion。</li><li>最后用真实项目素材替换占位图；真实素材不足时宁可留白，不用通用图库填满页面。</li></ol></section><section><h2>Optional Appendix: Interaction Patterns｜交互模式</h2><ul><li><strong>首屏指针</strong>：边缘物件根据指针相对视口中心偏移 <code>2–10px</code>；使用 requestAnimationFrame 和缓动，不直接绑定高频 DOM 写入。</li><li><strong>拖拽</strong>：桌面最多 2 个元素；cursor 使用 <code>grab/grabbing</code>；释放后保留位置或轻微吸附到安全区。</li><li><strong>项目 hover</strong>：预览图缩放 <code>1 → 1.02</code>，遮罩淡入，标签弹出；时长 <code>220–320ms</code>。</li><li><strong>菜单</strong>：胶囊从 48px 高展开为大面板，<code>600–900ms</code> 轻微 spring；关闭按钮始终可见。</li><li><strong>滚动揭示</strong>：标题/媒体用 <code>opacity + translateY(12–24px)</code>，避免大距离飞入。</li><li><strong>sticky 接力</strong>：下一项目区域固定 <code>100svh</code>；封面随滚动从约 <code>0.8</code> 放大到 <code>1</code>，不要改变页面滚动速度。</li><li><strong>声音</strong>：任何声音必须由用户主动开启；按钮状态文字/图标必须同步。</li><li><strong>Reduced motion</strong>：移除视差、旋转、跟随光标和缩放接力，保留不超过 <code>150ms</code> 的淡入淡出。</li></ul></section><section><h2>Optional Appendix: Content &amp; Messaging Patterns｜内容与语气</h2><ul><li>标题短、具体、有动作：“把复杂问题做清楚”“让关键一步更自然”。</li><li>项目摘要结构：为谁 / 解决什么 / 产生什么结果，不用“这是一个很酷的项目”。</li><li>CTA 使用中文动词：“查看案例”“播放原型”“了解过程”“复制邮箱”。</li><li>语气专业但不端着，可保留一句生活化状态，例如“最近在研究小而真实的 AI 体验”。</li><li>每个精选项目至少给一个可信证据：转化、效率、留存、满意度、交付范围或验证结论。</li></ul></section><section><h2>Optional Appendix: Observed Pages｜观察证据与推导边界</h2><ul><li><code>https://jackiehu.design/</code>：实时桌面页观察到 <code>#FFFAF5</code> 暖白背景、85px 英文手写姓名、20px IBM Plex Mono 模块标题、16px 圆角项目条目、散落图片、grab 指针物件、多个可点击媒体控件；移动端页面延长为约 4937px，英文姓名降到 72px，项目媒体纵向排列。首屏物件对单次指针移动未观察到图片本身 transform 变化，因此本规范中的轻视差是为你的首页做的设计推导，不是对原站行为的断言。</li><li><code>https://pacomepertant.com/projects/digital-travel</code>：直接服务器请求会返回 404，但通过站内 Digital Travel 缩略图的 SPA 点击事件可正常进入。实时桌面页观察到 <code>#0A0A0A</code> 背景、<code>#FAFAFA</code> 内框、<code>#21FFC0</code> 强调色、30px 外边距、16px 大框圆角、56px 项目标题、18px 正文、12 栏/16px gutter、全屏媒体、固定菜单和 sticky 下一项目；移动端观察到 15px 外边距、360px 内框、40px 项目标题、单列媒体和 100svh 下一项目区。</li><li><code>https://pacomepertant.com/about/</code>：用于通过当前站点作品缩略图进入 Digital Travel，并观察到横向项目缩略图、hover overlay 与连续作品列表结构。</li><li>Digital Travel 的作品内容还可由其 Behance/Vimeo 页面作为内容存在性的辅助证据，但本规范的布局数值以 <code>agent-browser</code> 的实时 DOM 与计算样式为主。</li></ul></section></article>
+            </div>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const sourceView = document.getElementById("sourceView");
+      const previewView = document.getElementById("previewView");
+      const copyButton = document.getElementById("copyButton");
+      const copyState = document.getElementById("copyState");
+      const viewButtons = document.querySelectorAll("[data-view]");
+
+      function setActiveView(view) {
+        const showSource = view === "source";
+        sourceView.hidden = !showSource;
+        previewView.hidden = showSource;
+        viewButtons.forEach((button) => {
+          button.classList.toggle("is-active", button.dataset.view === view);
+        });
+      }
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => setActiveView(button.dataset.view));
+      });
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(sourceView.textContent || "");
+          copyState.textContent = "Copied";
+        } catch (error) {
+          copyState.textContent = "Clipboard unavailable";
+        }
+
+        setTimeout(() => {
+          copyState.textContent = "";
+        }, 1400);
+      });
+    </script>
+  </body>
+</html>

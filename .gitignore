@@ -1,0 +1,13 @@
+site/node_modules/
+site/.vinext/
+site/dist/
+site/.next/
+site/.wrangler/
+.pnpm-store/
+/dist/
+/tmp/
+site/layout-*.png
+site/hero-*.png
+*.log
+.DS_Store
+Thumbs.db

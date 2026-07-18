@@ -2,7 +2,12 @@
 
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useRef, useState } from "react";
+import DockNav from "./components/DockNav";
+import FallingText from "./components/FallingText";
 import Folder from "./components/Folder";
+import FuzzyText from "./components/FuzzyText";
+import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
+import StaggeredMenu from "./components/StaggeredMenu";
 
 type Project = {
   index: string;
@@ -25,7 +30,7 @@ const projects: Project[] = [
     english: "COLORFUL CALL",
     tagline: "让 AI 创作进入每一次通话",
     meta: "小程序搭建 · AIGC · 全链路体验",
-    period: "2025.01—2026.04",
+    period: "2026.01—2026.04",
     image: "/project-color-call.png",
     accent: "#25a7f0",
     overview:
@@ -59,7 +64,7 @@ const projects: Project[] = [
     english: "MIAO XIAOTIAN",
     tagline: "从角色语言到治愈系三维世界",
     meta: "IP 设计 · AIGC 场景 · 视觉叙事",
-    period: "2025—2026",
+    period: "2024.06—2024.08",
     image: "/project-ip-scenes.png",
     altImage: "/project-ip-hero.png",
     accent: "#b8d56a",
@@ -98,7 +103,6 @@ export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const workListRef = useRef<HTMLDivElement>(null);
   const aboutShowcaseRef = useRef<HTMLDivElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
   const [activeProject, setActiveProject] = useState<number | null>(0);
   const [notice, setNotice] = useState("");
@@ -239,29 +243,9 @@ export default function Home() {
         <a className="brand" href="#top" aria-label="返回首页">
           WSQ<span>©26</span>
         </a>
-        <nav aria-label="主导航">
-          <a href="#about">关于</a>
-          <a href="#experience">实习经历</a>
-          <a href="#capabilities">能力</a>
-          <a href="#contact">联系</a>
-        </nav>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen}>
-          {menuOpen ? "关闭" : "菜单"}<i />
-        </button>
+        <DockNav />
+        <StaggeredMenu />
       </header>
-
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-hidden={!menuOpen}>
-        {[
-          ["关于我", "#about"],
-          ["实习经历", "#experience"],
-          ["专业能力", "#capabilities"],
-          ["联系我", "#contact"],
-        ].map(([label, href]) => (
-          <a key={href} href={href} onClick={() => setMenuOpen(false)}>
-            {label}<span>↗</span>
-          </a>
-        ))}
-      </div>
 
       <section
         ref={heroRef}
@@ -311,7 +295,7 @@ export default function Home() {
           <p className="hero-intro">I care about how people use products,<br />and whether every detail can naturally spark delight.</p>
           <div className="hero-actions">
             <a href="#experience">查看实习经历 <span>↓</span></a>
-            <a href="/resume.pdf" target="_blank" rel="noreferrer">查看简历 ↗</a>
+            <a href="/resume.pdf?v=20260718" target="_blank" rel="noreferrer">查看简历 ↗</a>
           </div>
         </div>
 
@@ -321,36 +305,53 @@ export default function Home() {
 
       <section className="about" id="about">
         <div className="about-cooking about-shell">
-          <h2>Currently cooking <span>☺</span></h2>
-          <p>
-            正在把观察、原型与视觉，慢慢煮成
-            <b>让人愿意使用的体验</b>。
+          <h2>Currently exploring <span>☺</span></h2>
+          <p className="cooking-project">
+            Learning from the details that shape
+            <span className="cooking-sticker" role="img" aria-label="Pencil sticker" tabIndex={0}>✎</span>
+            <span className="cooking-fuzzy">
+              <FuzzyText
+                className="cooking-fuzzy-canvas"
+                fontSize="clamp(21px, 1.55vw, 27px)"
+                fontWeight={600}
+                fontFamily={'"Segoe Print", "Segoe Script", "KaiTi", cursive'}
+                color="#292629"
+                baseIntensity={0.055}
+                hoverIntensity={0.27}
+                fuzzRange={18}
+                fps={60}
+                transitionDuration={420}
+              >
+                The Little Things,
+              </FuzzyText>
+            </span>
           </p>
-          <small>你好，我是王诗琦，一名关注真实反馈与细节温度的 UX / UI 设计师。</small>
+          <p className="cooking-description">I collect observations, test ideas &amp; refine the moments that make digital experiences feel clear and warm.</p>
+          <p className="cooking-status">Always curious. Always learning.<span aria-hidden="true">✦</span></p>
         </div>
 
-        <div className="about-recent about-shell">
+        <div className="about-recent about-shell" id="projects">
           <h2>Recently Made <span>▶</span><small>最近做过的事</small></h2>
           <div className="about-showcase" ref={aboutShowcaseRef}>
             <div className="about-list">
               <article className="about-entry" tabIndex={0} style={{ "--row-accent": "#25a7f0" } as CSSProperties}>
                 <img className="about-entry-icon" src="/work-color-call.png" alt="炫彩通话项目缩略图" />
-                <div><strong>炫彩通话小程序搭建</strong><span>UX / UI 设计实习 · 产品体验与界面优化</span></div>
+                <div><strong>炫彩通话小程序搭建</strong><span>UX / UI 设计实习 · 2026.01—2026.04</span></div>
                 <figure className="about-entry-preview"><img src="/project-color-call.png" alt="炫彩通话小程序项目预览" /><figcaption>从需求理解到高保真交付，持续校准产品体验。</figcaption></figure>
               </article>
               <article className="about-entry" tabIndex={0} style={{ "--row-accent": "#ff7a1a" } as CSSProperties}>
                 <img className="about-entry-icon" src="/work-moguding.png" alt="蘑菇丁项目缩略图" />
-                <div><strong>蘑菇丁 APP 改版升级</strong><span>设计实践 · 信息梳理、原型与视觉呈现</span></div>
+                <div><strong>蘑菇丁 APP 改版升级</strong><span>UI 设计实习 · 2025.04—2025.09</span></div>
                 <figure className="about-entry-preview"><img src="/project-moguding.png" alt="蘑菇丁 APP 改版项目预览" /><figcaption>把复杂信息整理成更清晰、更容易行动的界面。</figcaption></figure>
               </article>
-              <article className="about-entry" tabIndex={0} style={{ "--row-accent": "#f3a9cf" } as CSSProperties}>
-                <img className="about-entry-icon" src="/profile-source.png" alt="个人学习与设计记录" />
-                <div><strong>长春理工大学</strong><span>视觉传达设计 · 本科 · 2023—2027</span></div>
-                <figure className="about-entry-preview about-entry-preview-profile"><img src="/profile-source.png" alt="王诗琦个人照片" /><figcaption>视觉传达训练，让表达、秩序与细节成为设计习惯。</figcaption></figure>
+              <article className="about-entry" tabIndex={0} style={{ "--row-accent": "#65d6f5" } as CSSProperties}>
+                <img className="about-entry-icon" src="/project-kugou-season.png" alt="酷狗寻音季项目缩略图" />
+                <div><strong>酷狗寻音季</strong><span>视觉设计实习生 · 2024.10—2025.02</span></div>
+                <figure className="about-entry-preview"><img src="/project-kugou-season.png" alt="酷狗寻音季活动视觉项目预览" /><figcaption>以清透天空色、音乐道具与品牌 IP，构建轻快的狂欢季活动视觉。</figcaption></figure>
               </article>
               <article className="about-entry" tabIndex={0} style={{ "--row-accent": "#b7d95a" } as CSSProperties}>
                 <img className="about-entry-icon" src="/work-ip.png" alt="喵小甜 IP 项目缩略图" />
-                <div><strong>喵小甜 IP 全链路设计</strong><span>AI × 产品体验 · 角色、场景与交互表达</span></div>
+                <div><strong>喵小甜 IP 全链路设计</strong><span>IP 视觉设计 · 2024.06—2024.08</span></div>
                 <figure className="about-entry-preview"><img src="/project-ip-scenes.png" alt="喵小甜 IP 全链路设计预览" /><figcaption>持续尝试让新技术拥有更亲和、更有温度的表达。</figcaption></figure>
               </article>
             </div>
@@ -369,52 +370,65 @@ export default function Home() {
           <p>从用户问题、产品链路到视觉规范，我参与完整设计过程，也持续用数据验证方案是否真正有效。</p>
         </div>
 
-        <div className="experience-list">
-          <article className="experience-card">
+        <ScrollStack className="experience-list" itemDistance={140} itemScale={0.018} itemStackDistance={18} stackPosition="17%" scaleEndPosition="8%" baseScale={0.955} rotationAmount={0}>
+          <ScrollStackItem>
+          <article className="experience-card" style={{ "--experience-accent": "#21ffc0" } as CSSProperties}>
             <header>
               <div><small>01 / 互联网 · 电子商务</small><h3>上海掌淘网络科技有限公司</h3><p>UI 设计实习生 · 设计部</p></div>
               <div className="experience-meta"><span>2025.04—2025.09</span><span>上海</span></div>
             </header>
             <div className="experience-body">
-              <ol className="experience-notes">
-                <li>参与蘑菇丁 App 的竞品分析与用户调研，围绕用户活跃、简历完善和投递意愿规划页面逻辑与视觉风格。</li>
-                <li>负责产品视觉设计，建立色彩、字体与图标库规范，并协同开发完成高保真原型落地。</li>
-                <li>针对“不知如何填写、不敢投递”的痛点，将简历流程改为分步引导、预填示例与实时激励反馈。</li>
-              </ol>
+              <p className="experience-summary">围绕简历完善与投递意愿重构关键流程，并建立可复用的产品视觉规范。</p>
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
-                <div className="metric-grid">
-                  <div className="metric metric-primary"><strong>42%→76%</strong><span>简历完整填写率</span></div>
-                  <div className="metric"><strong>25%→8%</strong><span>单页放弃率</span></div>
-                  <div className="metric"><strong>−60%</strong><span>平均填写时长</span></div>
-                  <div className="metric metric-dark"><strong>21.38%→37.56%</strong><span>简历投递率 · +16.18 个百分点</span></div>
+                <div className="metric-grid metric-grid-three">
+                  <div className="metric"><strong>76%</strong><span>简历完整填写率 · 原 42%</span></div>
+                  <div className="metric"><strong>8%</strong><span>单页放弃率 · 原 25%</span></div>
+                  <div className="metric"><strong>37.56%</strong><span>简历投递率 · +16.18pp</span></div>
                 </div>
               </aside>
             </div>
           </article>
+          </ScrollStackItem>
 
-          <article className="experience-card experience-card-alt">
+          <ScrollStackItem>
+          <article className="experience-card experience-card-alt" style={{ "--experience-accent": "#b9d8ff" } as CSSProperties}>
             <header>
               <div><small>02 / 通信 · 数字体验</small><h3>重庆艾瑞数智科技有限公司</h3><p>UX 设计实习生 · 通信与传媒事业部</p></div>
               <div className="experience-meta"><span>2026.01—2026.04</span><span>浙江</span></div>
             </header>
             <div className="experience-body">
-              <ol className="experience-notes">
-                <li>参与炫彩通话小程序全链路体验设计，从体验策略到 UI / UX 关键方案输出。</li>
-                <li>主导“探索—创作—分享—二次创作”链路闭环分析与优化，负责移动端 UI 与规范制定。</li>
-                <li>建立色彩、字体和圆角规则，保证设计一致性，并支持团队后续复用与持续迭代。</li>
-              </ol>
+              <p className="experience-summary">负责炫彩通话小程序全链路体验，推动探索、创作与分享闭环落地。</p>
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
-                <div className="metric-grid metric-grid-three">
-                  <div className="metric metric-primary"><strong>35%</strong><span>用户七日留存率</span></div>
-                  <div className="metric"><strong>30%</strong><span>用户作品分享率</span></div>
-                  <div className="metric metric-dark"><strong>76%</strong><span>创作完成率 · 高于预期 16%</span></div>
+                <div className="metric-grid metric-grid-two">
+                  <div className="metric"><strong>35%</strong><span>用户七日留存率</span></div>
+                  <div className="metric"><strong>76%</strong><span>创作完成率 · 高于预期 16%</span></div>
                 </div>
               </aside>
             </div>
           </article>
-        </div>
+          </ScrollStackItem>
+
+          <ScrollStackItem>
+          <article className="experience-card experience-card-kugou" style={{ "--experience-accent": "#84ddf7" } as CSSProperties}>
+            <header>
+              <div><small>03 / 音乐 · 活动视觉</small><h3>酷狗计算机科技</h3><p>视觉设计实习生 · 视觉运营</p></div>
+              <div className="experience-meta"><span>2024.10—2025.02</span><span>广州</span></div>
+            </header>
+            <div className="experience-body">
+              <p className="experience-summary">完成“寻音季”主视觉与运营物料延展，建立年轻、轻盈的活动视觉语言。</p>
+              <aside className="experience-results">
+                <p>WORK RESULTS / 工作成果</p>
+                <div className="metric-grid metric-grid-two">
+                  <div className="metric"><strong aria-label="提升 20%"><i className="metric-trend" aria-hidden="true" />20%</strong><span>活动参与人数</span></div>
+                  <div className="metric"><strong aria-label="提升 35%"><i className="metric-trend" aria-hidden="true" />35%</strong><span>用户 7 日留存率</span></div>
+                </div>
+              </aside>
+            </div>
+          </article>
+          </ScrollStackItem>
+        </ScrollStack>
       </section>
 
       <section className="capabilities section-pad" id="capabilities">
@@ -433,9 +447,24 @@ export default function Home() {
       </section>
 
       <footer className="contact" id="contact">
-        <div className="section-label light"><span>04</span> CONTACT / 联系</div>
-        <div className="contact-main"><p>如果你也在认真打磨一个产品，</p><h2>我们聊聊。</h2></div>
-        <button className="email" onClick={copyEmail}>3619554001@qq.com <span>↗</span></button>
+        <div className="section-label"><span>04</span> CONTACT / 联系</div>
+        <div className="contact-main">
+          <FallingText
+            className="contact-falling"
+            gravity={0.32}
+            mouseConstraintStiffness={0.76}
+            lines={[
+              { text: "Curious, observant, always designing.", className: "contact-falling-kicker" },
+              { text: "Thanks for reading.", className: "contact-falling-headline" },
+              { text: "Let’s connect and create.", className: "contact-falling-headline" },
+            ]}
+          />
+        </div>
+        <button className="email" onClick={copyEmail} aria-label="复制邮箱 3619554001@qq.com">
+          <span className="email-sticker" aria-hidden="true"><i>✉</i><b>mail</b></span>
+          <span className="email-copy"><small>EMAIL / 点击复制</small><strong>3619554001@qq.com</strong></span>
+          <span className="email-arrow" aria-hidden="true">↗</span>
+        </button>
         <div className="contact-meta">
           <div><small>PHONE / WECHAT</small><a href="tel:19956642163">199 5664 2163</a></div>
           <div><small>LOCATION</small><p>吉林省长春市</p></div>

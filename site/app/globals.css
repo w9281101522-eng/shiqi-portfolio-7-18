@@ -79,16 +79,18 @@ img { display: block; max-width: 100%; }
 .bubble-menu-overlay { position: fixed; inset: 0; z-index: 98; display: none; place-items: center; padding: 112px 30px 38px; background: rgba(255,250,245,.96); backdrop-filter: blur(15px); opacity: 0; }
 .bubble-menu-pills { display: grid; width: min(1160px,100%); grid-template-columns: repeat(6,minmax(0,1fr)); gap: 14px; padding: 0; border: 0; border-radius: 0; background: none; backdrop-filter: none; }
 .site-nav .bubble-menu-pills { display: grid; }
-.bubble-menu-pill { --bubble-rotation: 0deg; --bubble-hover-bg: var(--mint); --bubble-hover-color: var(--ink); position: relative; display: flex; min-height: 128px; grid-column: span 2; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(40,34,29,.12); border-radius: 999px; color: #252225; background: #fffdfa; box-shadow: 0 14px 38px rgba(55,42,31,.08); text-decoration: none; transform: rotate(var(--bubble-rotation)); transition: color .28s, background .28s, box-shadow .3s, scale .3s cubic-bezier(.19,1,.22,1), transform .55s cubic-bezier(.34,1.56,.64,1); }
+.site-nav nav.bubble-menu-pills { padding: 0; border: 0; border-radius: 0; background: transparent; backdrop-filter: none; }
+.bubble-menu-pill { --bubble-rotation: 0deg; --bubble-hover-bg: var(--mint); --bubble-hover-color: var(--ink); position: relative; display: flex; min-height: 128px; grid-column: span 2; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(40,34,29,.14); border-radius: 999px; color: #252225; background: #fffdfa; box-shadow: none; text-decoration: none; transform: rotate(var(--bubble-rotation)); transition: color .28s, background .28s, scale .3s cubic-bezier(.19,1,.22,1), transform .55s cubic-bezier(.34,1.56,.64,1); }
 .bubble-menu-pill:nth-child(4) { grid-column: 2 / span 2; }
 .bubble-menu-pill:nth-child(5) { grid-column: 4 / span 2; }
 .bubble-menu-pill span { font-family: "PingFang SC", "Alibaba PuHuiTi", "HarmonyOS Sans SC", "Microsoft YaHei", sans-serif; font-size: clamp(25px,3vw,42px); font-weight: 600; letter-spacing: -.04em; }
 .bubble-menu-pill small { position: absolute; right: 28px; top: 22px; color: currentColor; font: 9px var(--mono); opacity: .55; }
-.bubble-menu-pill:hover, .bubble-menu-pill:focus-visible { color: var(--bubble-hover-color); background: var(--bubble-hover-bg); box-shadow: 0 20px 50px rgba(46,35,28,.12); scale: 1.035; }
+.bubble-menu-pill:hover, .bubble-menu-pill:focus-visible { color: var(--bubble-hover-color); background: var(--bubble-hover-bg); box-shadow: none; scale: 1.025; }
 
 .text-type { display: inline-block; white-space: pre-line; }
 .text-type__content { color: inherit; font: inherit; letter-spacing: inherit; }
-.text-type__cursor { display: inline-block; margin-left: .06em; color: var(--mint); font-family: var(--mono); font-weight: 500; }
+.text-type__symbol { display: inline-grid; width: .94em; height: .94em; place-items: center; margin-left: .08em; font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif !important; font-size: .82em; font-style: normal; font-weight: 400 !important; line-height: 1; letter-spacing: 0; vertical-align: .04em; transform: none; }
+.text-type__cursor { display: inline-block; width: 1px; height: .88em; margin-left: .11em; background: var(--mint); vertical-align: -.08em; transform-origin: center; }
 .section-type { white-space: pre-line; }
 .section-type-display { display: block; min-height: 2.3em; }
 .section-type-about, .section-type-recent { min-height: 1.2em; }
@@ -369,7 +371,7 @@ img { display: block; max-width: 100%; }
 .contact { position: relative; display: flex; min-height: 100svh; flex-direction: column; overflow: hidden; padding: 80px 30px 30px; color: var(--graphite); background: var(--paper); }
 .contact::before { content: ""; position: absolute; z-index: 0; right: -150px; top: 16%; width: 430px; height: 430px; border: 1px dashed rgba(62,62,66,.09); border-radius: 50%; box-shadow: 0 0 0 52px rgba(33,255,192,.018), 0 0 0 104px rgba(33,255,192,.012); }
 .contact > * { position: relative; z-index: 1; }
-.contact-main { max-width: 1180px; margin-top: auto; }
+.contact-main { position: relative; max-width: 1180px; margin-top: auto; }
 .falling-text-container { position: relative; width: 100%; overflow: hidden; outline: none; cursor: pointer; }
 .falling-text-target { position: relative; z-index: 2; width: 100%; height: 100%; }
 .falling-line { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: .32em; color: #464246; }
@@ -380,12 +382,18 @@ img { display: block; max-width: 100%; }
 .contact-falling-kicker { margin-bottom: 24px; font: 400 clamp(16px,1.15vw,19px)/1.6 var(--mono); letter-spacing: .01em; }
 .contact-falling-headline { font: 500 clamp(36px,4.35vw,68px)/1.18 var(--mono); letter-spacing: -.03em; }
 .contact-falling-headline + .contact-falling-headline { margin-top: .13em; }
-.contact-falling:not(.is-falling)::after { content: "CLICK TO LET THE WORDS FALL  ↘"; position: absolute; z-index: 3; right: 4px; bottom: 6px; color: #aaa19a; font: 8px var(--mono); letter-spacing: .08em; opacity: .65; transition: opacity .25s; }
-.contact-falling:not(.is-falling)::before { content: "☝"; position: absolute; z-index: 4; right: 168px; bottom: -2px; color: #554f4b; font: 30px/1 "Segoe Print", "Comic Sans MS", cursive; filter: drop-shadow(2px 2px 0 var(--mint)); transform: rotate(-13deg); transform-origin: 50% 90%; animation: contact-click-nudge 1.8s ease-in-out infinite; pointer-events: none; }
-.contact-falling:not(.is-falling):hover::after, .contact-falling:not(.is-falling):focus-visible::after { opacity: 1; }
-.contact-falling:not(.is-falling):hover::before, .contact-falling:not(.is-falling):focus-visible::before { animation-duration: .72s; }
 .contact-falling.is-falling .falling-line { display: block; margin: 0; }
-@keyframes contact-click-nudge { 0%,100% { translate: 0 0; rotate: 0deg; } 45% { translate: 2px -5px; rotate: 7deg; } 70% { translate: -1px 1px; rotate: -3deg; } }
+.contact-click-doodle { position: absolute; z-index: 5; right: 12px; bottom: 20px; display: block; width: 112px; height: 86px; color: #373330; pointer-events: none; transform: rotate(-4deg); transform-origin: 50% 100%; animation: contact-click-nudge 1.85s ease-in-out infinite; }
+.contact-click-doodle b { position: absolute; right: 3px; top: 0; display: grid; width: 88px; height: 38px; place-items: center; border: 2px solid currentColor; border-radius: 47% 53% 44% 56% / 56% 48% 52% 44%; background: rgba(255,250,245,.88); font: 600 19px/1 "Segoe Print", "Comic Sans MS", cursive; letter-spacing: .01em; }
+.contact-click-doodle i { position: absolute; right: 28px; bottom: 0; width: 34px; height: 40px; border: 2px solid currentColor; border-radius: 42% 48% 49% 46% / 34% 36% 62% 66%; background: var(--paper); transform: rotate(-5deg); }
+.contact-click-doodle i::before { content: ""; position: absolute; left: 4px; top: -27px; width: 12px; height: 35px; border: 2px solid currentColor; border-bottom: 0; border-radius: 8px 8px 3px 3px; background: var(--paper); transform: rotate(-2deg); }
+.contact-click-doodle i::after { content: ""; position: absolute; left: -14px; top: 6px; width: 19px; height: 12px; border: 2px solid currentColor; border-right: 0; border-radius: 10px 3px 3px 10px; background: var(--paper); transform: rotate(28deg); }
+.contact-click-doodle i span, .contact-click-doodle i span::before { position: absolute; width: 9px; height: 16px; border: 2px solid currentColor; border-bottom: 0; border-radius: 7px 7px 0 0; background: var(--paper); content: ""; }
+.contact-click-doodle i span { right: 4px; top: -7px; transform: rotate(8deg); }
+.contact-click-doodle i span::before { right: 7px; top: 2px; transform: rotate(-8deg); }
+.contact-main:has(.contact-falling.is-falling) .contact-click-doodle { opacity: 0; transition: opacity .2s; }
+.contact-main:hover .contact-click-doodle, .contact-main:focus-within .contact-click-doodle { animation-duration: .82s; }
+@keyframes contact-click-nudge { 0%,100% { translate: 0 0; rotate: 0deg; } 45% { translate: 1px -4px; rotate: 4deg; } 72% { translate: -1px 1px; rotate: -2deg; } }
 .email { display: flex; align-items: center; width: max-content; max-width: 100%; gap: 16px; margin-top: 34px; padding: 2px 3px 5px 1px; border: 0; color: var(--graphite); background: transparent; text-align: left; cursor: pointer; }
 .email-sticker { position: relative; display: grid; width: 60px; height: 55px; flex: 0 0 auto; place-items: center; border: 1.5px solid #514c48; border-radius: 47% 53% 45% 55% / 53% 44% 56% 47%; color: #514c48; background: rgba(255,255,255,.72); box-shadow: 3px 3px 0 var(--mint); transform: rotate(-6deg); transition: transform .55s cubic-bezier(.19,1,.22,1), box-shadow .35s; }
 .email-sticker i { font: normal 25px/1 var(--serif); transform: rotate(4deg); }
@@ -556,7 +564,7 @@ img { display: block; max-width: 100%; }
   .contact-falling { height: 300px; }
   .contact-falling-kicker { margin-bottom: 18px; font-size: 14px; line-height: 1.55; }
   .contact-falling-headline { font-size: clamp(28px,7.6vw,40px); line-height: 1.22; letter-spacing: -.025em; }
-  .contact-falling:not(.is-falling)::before { right: 144px; font-size: 25px; }
+  .contact-click-doodle { right: 2px; bottom: 7px; scale: .78; transform-origin: right bottom; }
   .email { width: max-content; gap: 12px; margin-top: 32px; }
   .email-sticker { width: 54px; height: 50px; }
   .email-arrow { width: 28px; height: 28px; }

@@ -469,6 +469,10 @@ export default function Home() {
               { text: "Let’s connect and create.", className: "contact-falling-headline" },
             ]}
           />
+          <span className="contact-click-doodle" aria-hidden="true">
+            <b>Click</b>
+            <i><span /></i>
+          </span>
         </div>
         <button className="email" onClick={copyEmail} aria-label="复制邮箱 3619554001@qq.com">
           <span className="email-sticker" aria-hidden="true"><i>✉</i><b>mail</b></span>

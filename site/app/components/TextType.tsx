@@ -30,7 +30,7 @@ export default function TextType({
   loop = false,
   className = "",
   showCursor = true,
-  cursorCharacter = "▍",
+  cursorCharacter = "",
   cursorBlinkDuration = 0.58,
   cursorClassName = "",
   startOnVisible = true,
@@ -94,6 +94,13 @@ export default function TextType({
     return () => window.clearTimeout(timeout);
   }, [deleting, deletingSpeed, displayedText, initialDelay, loop, pauseDuration, textArray, textIndex, typingSpeed, visible]);
 
+  const typedContent = displayedText.endsWith("☺") ? (
+    <>
+      {displayedText.slice(0, -1)}
+      <span className="text-type__symbol">☺</span>
+    </>
+  ) : displayedText;
+
   return createElement(
     Component,
     {
@@ -101,7 +108,7 @@ export default function TextType({
       className: `text-type ${className}`.trim(),
       "aria-label": textArray[textIndex],
     },
-    <span className="text-type__content" aria-hidden="true">{displayedText}</span>,
+    <span className="text-type__content" aria-hidden="true">{typedContent}</span>,
     showCursor && <span ref={cursorRef} className={`text-type__cursor ${cursorClassName}`.trim()} aria-hidden="true">{cursorCharacter}</span>,
   );
 }

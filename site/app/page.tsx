@@ -3,11 +3,13 @@
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { useEffect, useRef, useState } from "react";
 import DockNav from "./components/DockNav";
+import BubbleMenu from "./components/BubbleMenu";
+import CountUp from "./components/CountUp";
 import FallingText from "./components/FallingText";
 import Folder from "./components/Folder";
 import FuzzyText from "./components/FuzzyText";
 import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
-import StaggeredMenu from "./components/StaggeredMenu";
+import TextType from "./components/TextType";
 
 type Project = {
   index: string;
@@ -97,6 +99,14 @@ const capabilities = [
     text: "把色彩、字体、图标和组件整理为可执行规则，并与开发协作跟进还原度与持续迭代。",
     tags: "UI 规范 / 组件系统 / 开发协作",
   },
+];
+
+const bubbleMenuItems = [
+  { label: "关于我", href: "#about", rotation: -4, hoverStyles: { bgColor: "#21ffc0", textColor: "#171717" } },
+  { label: "精选项目", href: "#projects", rotation: 3, hoverStyles: { bgColor: "#b9d8ff", textColor: "#171717" } },
+  { label: "实习经历", href: "#experience", rotation: -2, hoverStyles: { bgColor: "#ffb7cd", textColor: "#171717" } },
+  { label: "专业能力", href: "#capabilities", rotation: 3, hoverStyles: { bgColor: "#fff08a", textColor: "#171717" } },
+  { label: "联系", href: "#contact", rotation: -4, hoverStyles: { bgColor: "#00bbff", textColor: "#ffffff" } },
 ];
 
 export default function Home() {
@@ -244,7 +254,7 @@ export default function Home() {
           WSQ<span>©26</span>
         </a>
         <DockNav />
-        <StaggeredMenu />
+        <BubbleMenu items={bubbleMenuItems} />
       </header>
 
       <section
@@ -305,7 +315,7 @@ export default function Home() {
 
       <section className="about" id="about">
         <div className="about-cooking about-shell">
-          <h2>Currently exploring <span>☺</span></h2>
+          <h2><TextType text="Currently exploring ☺" className="section-type section-type-about" /></h2>
           <p className="cooking-project">
             Learning from the details that shape
             <span className="cooking-sticker" role="img" aria-label="Pencil sticker" tabIndex={0}>✎</span>
@@ -331,7 +341,7 @@ export default function Home() {
         </div>
 
         <div className="about-recent about-shell" id="projects">
-          <h2>Recently Made <span>▶</span><small>最近做过的事</small></h2>
+          <h2><TextType text="Recently Made ▶" className="section-type section-type-recent" /><small>最近做过的事</small></h2>
           <div className="about-showcase" ref={aboutShowcaseRef}>
             <div className="about-list">
               <article className="about-entry" tabIndex={0} style={{ "--row-accent": "#25a7f0" } as CSSProperties}>
@@ -366,7 +376,7 @@ export default function Home() {
       <section className="experience section-pad" id="experience">
         <div className="section-label"><span>02</span> EXPERIENCE / 实习经历</div>
         <div className="experience-head">
-          <h2>在真实业务中，<br />让设计产生结果。</h2>
+          <TextType as="h2" text={"在真实业务中，\n让设计产生结果。"} className="section-type section-type-display" />
           <p>从用户问题、产品链路到视觉规范，我参与完整设计过程，也持续用数据验证方案是否真正有效。</p>
         </div>
 
@@ -382,9 +392,9 @@ export default function Home() {
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
                 <div className="metric-grid metric-grid-three">
-                  <div className="metric"><strong>76%</strong><span>简历完整填写率 · 原 42%</span></div>
-                  <div className="metric"><strong>8%</strong><span>单页放弃率 · 原 25%</span></div>
-                  <div className="metric"><strong>37.56%</strong><span>简历投递率 · +16.18pp</span></div>
+                  <div className="metric"><strong aria-label="76%"><CountUp to={76} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>简历完整填写率 · 原 42%</span></div>
+                  <div className="metric"><strong aria-label="8%"><CountUp to={8} delay={0.08} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>单页放弃率 · 原 25%</span></div>
+                  <div className="metric"><strong aria-label="37.56%"><CountUp to={37.56} delay={0.16} duration={1.35} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>简历投递率 · +16.18pp</span></div>
                 </div>
               </aside>
             </div>
@@ -402,8 +412,8 @@ export default function Home() {
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
                 <div className="metric-grid metric-grid-two">
-                  <div className="metric"><strong>35%</strong><span>用户七日留存率</span></div>
-                  <div className="metric"><strong>76%</strong><span>创作完成率 · 高于预期 16%</span></div>
+                  <div className="metric"><strong aria-label="提升 35%"><i className="metric-trend metric-trend-blue" aria-hidden="true" /><CountUp to={35} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>用户七日留存率</span></div>
+                  <div className="metric"><strong aria-label="完成率 76%"><i className="metric-check" aria-hidden="true" /><CountUp to={76} delay={0.1} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>创作完成率 · 高于预期 16%</span></div>
                 </div>
               </aside>
             </div>
@@ -421,8 +431,8 @@ export default function Home() {
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
                 <div className="metric-grid metric-grid-two">
-                  <div className="metric"><strong aria-label="提升 20%"><i className="metric-trend" aria-hidden="true" />20%</strong><span>活动参与人数</span></div>
-                  <div className="metric"><strong aria-label="提升 35%"><i className="metric-trend" aria-hidden="true" />35%</strong><span>用户 7 日留存率</span></div>
+                  <div className="metric"><strong aria-label="提升 20%"><i className="metric-trend" aria-hidden="true" /><CountUp to={20} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>活动参与人数</span></div>
+                  <div className="metric"><strong aria-label="提升 35%"><i className="metric-trend" aria-hidden="true" /><CountUp to={35} delay={0.1} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>用户 7 日留存率</span></div>
                 </div>
               </aside>
             </div>
@@ -434,7 +444,7 @@ export default function Home() {
       <section className="capabilities section-pad" id="capabilities">
         <div className="section-label"><span>03</span> CAPABILITIES / 专业能力</div>
         <div className="capabilities-head">
-          <h2>从问题出发，<br />把方案推向完成。</h2>
+          <TextType as="h2" text={"从问题出发，\n把方案推向完成。"} className="section-type section-type-display" />
           <p>研究、原型与视觉不是三段孤立流程，而是一组持续校准方向的方法。</p>
         </div>
         <div className="capability-cards">

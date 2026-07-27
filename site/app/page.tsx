@@ -83,21 +83,63 @@ const projects: Project[] = [
 const capabilities = [
   {
     number: "01",
-    title: "研究与问题定义",
-    text: "从用户反馈、竞品和业务目标中找到真正影响体验的节点，把模糊问题转化为可验证的设计目标。",
-    tags: "用户调研 / 竞品分析 / 体验地图",
+    kind: "research",
+    label: "RESEARCH",
+    title: "用户访谈",
+    text: "制定访谈提纲，整理原话与行为证据，提炼可执行的机会点。",
+    skills: ["用户调研", "竞品分析", "体验地图"],
+    image: null,
+    imageAlt: "",
   },
   {
     number: "02",
-    title: "交互原型与验证",
-    text: "从信息架构到高保真原型，用真实任务反复校准流程、层级和关键反馈，让方案经得起使用。",
-    tags: "流程设计 / Figma 原型 / 可用性验证",
+    kind: "flow",
+    label: "FLOW",
+    title: "复杂流程梳理",
+    text: "把角色、任务和异常路径画清楚，输出可讨论、可落地的完整流程。",
+    skills: ["信息架构", "流程设计", "任务路径"],
+    image: null,
+    imageAlt: "",
   },
   {
     number: "03",
-    title: "视觉系统与交付",
-    text: "把色彩、字体、图标和组件整理为可执行规则，并与开发协作跟进还原度与持续迭代。",
-    tags: "UI 规范 / 组件系统 / 开发协作",
+    kind: "prototype",
+    label: "PROTOTYPE",
+    title: "高保真原型",
+    text: "用 Figma 搭建接近真实产品的关键交互、状态反馈与页面衔接。",
+    skills: ["Figma 原型", "交互状态", "可用性验证"],
+    image: "/capability-prototype.png",
+    imageAlt: "高保真界面展示",
+  },
+  {
+    number: "04",
+    kind: "system",
+    label: "SYSTEM",
+    title: "组件与视觉规范",
+    text: "统一字体、色彩、圆角、图标和组件状态，整理成团队可复用的规则。",
+    skills: ["UI 规范", "组件系统", "视觉规则"],
+    image: null,
+    imageAlt: "",
+  },
+  {
+    number: "05",
+    kind: "delivery",
+    label: "DELIVERY",
+    title: "设计交付协作",
+    text: "补齐页面状态、尺寸与交互说明，跟进开发还原并处理实现偏差。",
+    skills: ["设计标注", "开发协作", "还原验收"],
+    image: null,
+    imageAlt: "",
+  },
+  {
+    number: "06",
+    kind: "motion",
+    label: "MOTION + AI",
+    title: "动效与 AI 协作",
+    text: "用 After Effects、AIGC 与 Codex 辅助概念探索、动态表达和快速制作。",
+    skills: ["After Effects", "AIGC", "Codex"],
+    image: null,
+    imageAlt: "",
   },
 ];
 
@@ -238,15 +280,6 @@ export default function Home() {
     };
   }, []);
 
-  async function copyEmail() {
-    try {
-      await navigator.clipboard.writeText("3619554001@qq.com");
-      showNotice("邮箱已复制，期待你的消息 ✦");
-    } catch {
-      window.location.href = "mailto:3619554001@qq.com";
-    }
-  }
-
   return (
     <main>
       <header className="site-nav">
@@ -374,7 +407,7 @@ export default function Home() {
       </section>
 
       <section className="experience section-pad" id="experience">
-        <div className="section-label"><span>02</span> EXPERIENCE / 实习经历</div>
+        <div className="section-label"><span>03</span> EXPERIENCE / 实习经历</div>
         <div className="experience-head">
           <TextType as="h2" text={"在真实业务中，\n让设计产生结果。"} className="section-type section-type-display" />
           <p>从用户问题、产品链路到视觉规范，我参与完整设计过程，也持续用数据验证方案是否真正有效。</p>
@@ -393,8 +426,8 @@ export default function Home() {
                 <p>WORK RESULTS / 工作成果</p>
                 <div className="metric-grid metric-grid-three">
                   <div className="metric"><strong aria-label="76%"><CountUp to={76} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>简历完整填写率 · 原 42%</span></div>
-                  <div className="metric"><strong aria-label="8%"><CountUp to={8} delay={0.08} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>单页放弃率 · 原 25%</span></div>
-                  <div className="metric"><strong aria-label="37.56%"><CountUp to={37.56} delay={0.16} duration={1.35} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>简历投递率 · +16.18pp</span></div>
+                  <div className="metric"><strong aria-label="8%"><CountUp to={8} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>单页放弃率 · 原 25%</span></div>
+                  <div className="metric"><strong aria-label="37.56%"><CountUp to={37.56} duration={1.05} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>简历投递率 · +16.18pp</span></div>
                 </div>
               </aside>
             </div>
@@ -412,8 +445,8 @@ export default function Home() {
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
                 <div className="metric-grid metric-grid-two">
-                  <div className="metric"><strong aria-label="提升 35%"><i className="metric-trend metric-trend-blue" aria-hidden="true" /><CountUp to={35} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>用户七日留存率</span></div>
-                  <div className="metric"><strong aria-label="完成率 76%"><i className="metric-check" aria-hidden="true" /><CountUp to={76} delay={0.1} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>创作完成率 · 高于预期 16%</span></div>
+                  <div className="metric"><strong aria-label="提升 35%"><CountUp to={35} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>用户七日留存率</span></div>
+                  <div className="metric"><strong aria-label="完成率 76%"><CountUp to={76} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>创作完成率 · 高于预期 16%</span></div>
                 </div>
               </aside>
             </div>
@@ -431,8 +464,8 @@ export default function Home() {
               <aside className="experience-results">
                 <p>WORK RESULTS / 工作成果</p>
                 <div className="metric-grid metric-grid-two">
-                  <div className="metric"><strong aria-label="提升 20%"><i className="metric-trend" aria-hidden="true" /><CountUp to={20} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>活动参与人数</span></div>
-                  <div className="metric"><strong aria-label="提升 35%"><i className="metric-trend" aria-hidden="true" /><CountUp to={35} delay={0.1} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>用户 7 日留存率</span></div>
+                  <div className="metric"><strong aria-label="提升 20%"><CountUp to={20} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>活动参与人数</span></div>
+                  <div className="metric"><strong aria-label="提升 35%"><CountUp to={35} className="count-up-text" /><span className="metric-unit" aria-hidden="true">%</span></strong><span>用户 7 日留存率</span></div>
                 </div>
               </aside>
             </div>
@@ -442,22 +475,46 @@ export default function Home() {
       </section>
 
       <section className="capabilities section-pad" id="capabilities">
-        <div className="section-label"><span>03</span> CAPABILITIES / 专业能力</div>
+        <div className="section-label"><span>04</span> CAPABILITIES / 专业能力</div>
         <div className="capabilities-head">
           <TextType as="h2" text={"从问题出发，\n把方案推向完成。"} className="section-type section-type-display" />
           <p>研究、原型与视觉不是三段孤立流程，而是一组持续校准方向的方法。</p>
         </div>
         <div className="capability-cards">
-          {capabilities.map((item, index) => (
-            <article key={item.number} style={{ "--tilt": `${[-2, 1.4, -1][index]}deg` } as CSSProperties}>
-              <small>{item.number}</small><h3>{item.title}</h3><p>{item.text}</p><span>{item.tags}</span><i>↗</i>
+          {capabilities.map((item) => (
+            <article className={`capability-card capability-card-${item.kind}`} key={item.number}>
+              <header><small>{item.number}</small><em>{item.label}</em></header>
+              {item.image && <img className="capability-visual" src={item.image} alt={item.imageAlt} />}
+              {item.kind === "system" && (
+                <div className="capability-system-board" aria-hidden="true">
+                  <div className="system-sample system-sample-type">
+                    <span>TYPE</span>
+                    <strong>苹方</strong>
+                    <small>PingFang SC</small>
+                  </div>
+                  <div className="system-sample system-sample-color">
+                    <span>COLOR</span>
+                    <div><i></i><i></i><i></i><i></i><i></i></div>
+                  </div>
+                  <div className="system-sample system-sample-component">
+                    <span>COMPONENT</span>
+                    <img src="/system-component-card.png" alt="" />
+                  </div>
+                </div>
+              )}
+              <div className="capability-copy">
+                <h3>{item.title}</h3>
+                <ul className="capability-tags" aria-label={`${item.title}的具体能力`}>
+                  {item.skills.map((skill) => <li key={skill}>{skill}</li>)}
+                </ul>
+              </div>
             </article>
           ))}
         </div>
       </section>
 
       <footer className="contact" id="contact">
-        <div className="section-label"><span>04</span> CONTACT / 联系</div>
+        <div className="section-label"><span>05</span> CONTACT / 联系</div>
         <div className="contact-main">
           <FallingText
             className="contact-falling"
@@ -470,15 +527,14 @@ export default function Home() {
             ]}
           />
           <span className="contact-click-doodle" aria-hidden="true">
-            <b>Click</b>
-            <i><span /></i>
+            <img src="/click-hand-v2.png" alt="" />
           </span>
         </div>
-        <button className="email" onClick={copyEmail} aria-label="复制邮箱 3619554001@qq.com">
-          <span className="email-sticker" aria-hidden="true"><i>✉</i><b>mail</b></span>
-          <span className="email-copy"><small>EMAIL / 点击复制</small><strong>3619554001@qq.com</strong></span>
+        <a className="email" href="mailto:3619554001@qq.com" aria-label="发送邮件到 3619554001@qq.com">
+          <span className="email-sticker" aria-hidden="true"><i></i><b>mail</b></span>
+          <span className="email-copy"><small>EMAIL / 写邮件</small><strong>3619554001@qq.com</strong></span>
           <span className="email-arrow" aria-hidden="true">↗</span>
-        </button>
+        </a>
         <div className="contact-meta">
           <div><small>PHONE / WECHAT</small><a href="tel:19956642163">199 5664 2163</a></div>
           <div><small>LOCATION</small><p>吉林省长春市</p></div>

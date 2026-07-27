@@ -1,7 +1,7 @@
 "use client";
 
-import { useInView, useMotionValue, useReducedMotion, useSpring } from "motion/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type CountUpProps = {
   to: number;
@@ -21,7 +21,7 @@ export default function CountUp({
   from = 0,
   direction = "up",
   delay = 0,
-  duration = 1.2,
+  duration = 0.95,
   className = "",
   startWhen = true,
   separator = "",
@@ -29,13 +29,40 @@ export default function CountUp({
   onEnd,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
+  const [isInView, setIsInView] = useState(false);
   const shouldReduceMotion = useReducedMotion();
   const motionValue = useMotionValue(direction === "down" ? to : from);
   const springValue = useSpring(motionValue, {
-    damping: 20 + 40 * (1 / duration),
-    stiffness: 100 * (1 / duration),
+    damping: 30 * (1 / duration),
+    stiffness: 230 * (1 / duration),
   });
-  const isInView = useInView(ref, { once: true, margin: "0px" });
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const card = element.closest<HTMLElement>(".scroll-stack-card");
+    const simpleLayout = window.matchMedia("(max-width: 760px), (prefers-reduced-motion: reduce)").matches;
+
+    if (card && !simpleLayout) {
+      const activate = () => {
+        if (card.dataset.countActive === "true") setIsInView(true);
+      };
+      activate();
+      card.addEventListener("stackactivate", activate);
+      return () => card.removeEventListener("stackactivate", activate);
+    }
+
+    const target = card ?? element;
+    const observer = new IntersectionObserver(
+      entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        setIsInView(true);
+        observer.disconnect();
+      },
+      { threshold: 0.55 },
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
   const getDecimalPlaces = (num: number) => {
     const decimals = num.toString().split(".")[1];

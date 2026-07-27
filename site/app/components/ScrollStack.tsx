@@ -34,14 +34,21 @@ export default function ScrollStack({
 }: ScrollStackProps) {
   const stackRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number | null>(null);
+  const activationTimerRef = useRef<number | null>(null);
+  const activeCardRef = useRef(-1);
+  const pendingCardRef = useRef(-1);
 
   const parsePosition = useCallback((value: string, height: number) =>
     value.includes("%") ? (Number.parseFloat(value) / 100) * height : Number.parseFloat(value), []);
 
   const update = useCallback(() => {
     const root = stackRef.current;
-    if (!root || window.matchMedia("(max-width: 760px), (prefers-reduced-motion: reduce)").matches) return;
+    if (!root) return;
     const cards = Array.from(root.querySelectorAll<HTMLElement>(":scope > .scroll-stack-inner > .scroll-stack-card"));
+    if (window.matchMedia("(max-width: 760px), (prefers-reduced-motion: reduce)").matches) {
+      cards.forEach((card) => card.classList.remove("is-stack-active"));
+      return;
+    }
     const end = root.querySelector<HTMLElement>(".scroll-stack-end");
     if (!cards.length || !end) return;
     const documentTop = (element: HTMLElement) => {
@@ -56,12 +63,15 @@ export default function ScrollStack({
     const stackPositionPx = parsePosition(stackPosition, viewportHeight);
     const scaleEndPositionPx = parsePosition(scaleEndPosition, viewportHeight);
     const endTop = documentTop(end);
-    let topCardIndex = 0;
+    let topCardIndex = -1;
+    let countCardIndex = -1;
 
     cards.forEach((card, index) => {
       const cardTop = documentTop(card);
       if (scrollTop >= cardTop - stackPositionPx - itemStackDistance * index) topCardIndex = index;
+      if (scrollTop >= cardTop - viewportHeight * 0.72) countCardIndex = index;
     });
+    cards.forEach((card, index) => card.classList.toggle("is-stack-active", index === countCardIndex));
 
     cards.forEach((card, index) => {
       const cardTop = documentTop(card);
@@ -84,6 +94,25 @@ export default function ScrollStack({
       card.style.transform = `translate3d(0, ${translateY.toFixed(2)}px, 0) scale(${scale.toFixed(4)}) rotate(${rotation.toFixed(3)}deg)`;
       card.style.filter = blurAmount && depth ? `blur(${(depth * blurAmount).toFixed(2)}px)` : "";
     });
+
+    activeCardRef.current = countCardIndex;
+    const activeCard = cards[countCardIndex];
+    if (!activeCard || activeCard.dataset.countActive === "true") {
+      if (activationTimerRef.current !== null) window.clearTimeout(activationTimerRef.current);
+      activationTimerRef.current = null;
+      pendingCardRef.current = -1;
+      return;
+    }
+    if (pendingCardRef.current === countCardIndex) return;
+    if (activationTimerRef.current !== null) window.clearTimeout(activationTimerRef.current);
+    pendingCardRef.current = countCardIndex;
+    activationTimerRef.current = window.setTimeout(() => {
+      activationTimerRef.current = null;
+      if (activeCardRef.current !== countCardIndex) return;
+      activeCard.dataset.countActive = "true";
+      pendingCardRef.current = -1;
+      activeCard.dispatchEvent(new CustomEvent("stackactivate"));
+    }, 40);
   }, [baseScale, blurAmount, itemScale, itemStackDistance, parsePosition, rotationAmount, scaleEndPosition, stackPosition]);
 
   useLayoutEffect(() => {
@@ -103,6 +132,7 @@ export default function ScrollStack({
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+      if (activationTimerRef.current !== null) window.clearTimeout(activationTimerRef.current);
     };
   }, [itemDistance, update]);
 
